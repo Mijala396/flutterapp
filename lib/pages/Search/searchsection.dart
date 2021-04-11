@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
 
 class Search extends StatefulWidget {
   @override
@@ -6,9 +8,26 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
-  String _value = 'Math';
+  String _value = 'Maths';
   String value1 = "Highschool";
   String values;
+
+  Future<void> getTutors() async{
+
+    try{
+        Response response = await get('http://10.0.2.2:8000/auth/search/?subject_name=$_value');
+        List data = jsonDecode(response.body);
+
+        Navigator.pushNamed(context, '/tutorList', arguments: {
+          'data':data
+        });
+    }
+    catch(Err){
+      print(Err);
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,13 +63,13 @@ class _SearchState extends State<Search> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              " Math",
+                              " Maths",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 20,
                               ),
                             ),
-                            value: 'Math',
+                            value: 'Maths',
                           ),
                           DropdownMenuItem(
                             child: Text(
@@ -103,7 +122,11 @@ class _SearchState extends State<Search> {
                         fontSize: 20,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+
+                      getTutors();
+
+                    },
                   )),
             ])));
   }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Login_Screen.dart';
-import 'package:flutter_application_1/Searchsection.dart';
+import 'package:flutter_application_1/pages/Search/Searchsection.dart';
+import 'package:flutter_application_1/pages/Profile/student_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class StudentHome extends StatefulWidget {
   @override
@@ -36,6 +39,7 @@ class _State extends State<StudentHome> {
                         ),
                       ),
                       onPressed: () {
+                        Navigator.pushNamed(context, '/profile');
                         //signup screen
                       },
                     )),
@@ -133,11 +137,10 @@ class _State extends State<StudentHome> {
                           fontSize: 25,
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        ); //signup screen
+                      onPressed: () async {
+                        final pref = await SharedPreferences.getInstance();
+                        await pref.setString('token', '');
+                        Navigator.pushReplacementNamed(context, '/');
                       },
                     )),
               ],

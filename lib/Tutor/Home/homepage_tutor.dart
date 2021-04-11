@@ -35,7 +35,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.pushNamed(context, '/tutorProfile');
                       },
                     )),
                 Container(

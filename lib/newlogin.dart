@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/registration_option.dart';
-import 'package:flutter_application_1/homepage_student.dart';
-import 'package:flutter_application_1/homepage_tutor.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Home/homepage_student.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Home/homepage_tutor.dart';
 
 class Formscreen extends StatefulWidget {
   @override
@@ -129,10 +129,13 @@ class Formscreenstate extends State<Formscreen> {
                             elevation: 5.0,
                             onPressed: () {
                               if (!formKey.currentState.validate()) {
+
                                 return;
                               }
 
                               formKey.currentState.save();
+                              print(username);
+                              print(email);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

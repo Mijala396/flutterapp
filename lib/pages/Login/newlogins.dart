@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/registration_form2.dart';
-import 'package:flutter_application_1/homepage_student.dart';
-import 'package:flutter_application_1/homepage_tutor.dart';
-import 'package:flutter_application_1/Tutorlogin.dart';
-
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Register/registration_form2.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Home/homepage_student.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Home/homepage_tutor.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Login/Tutorlogin.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 class Formscreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -14,6 +16,59 @@ class Formscreen extends StatefulWidget {
 class Formscreenstate extends State<Formscreen> {
   String username;
   String email;
+  bool invalidCred = false;
+
+
+   Future<void> getData(String email, String password) async {
+     print(email.trim());
+     print(password);
+      try{
+
+        final Response response = await post(
+          'http://10.0.2.2:8000/auth/login/',
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "email":email.trim(),
+            "password":password,
+          }),
+        );
+        Map data = jsonDecode(response.body);
+        print(data);
+        Future<void> __storejwt() async{
+          final pref = await SharedPreferences.getInstance();
+          await pref.setString('token', data['tokens']['access']);
+          final token = pref.getString('token');
+          print(token);
+        }
+        bool Authenticated = data.containsKey('tokens');
+
+
+        if(Authenticated){
+          __storejwt();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => StudentHome()),
+          );
+        }
+
+      setState(() {
+        invalidCred=true;
+      });
+      print('Invalid Credentials');
+
+
+      }
+      catch(e){
+        print('There was an error');
+        setState(() {
+          invalidCred=true;
+        });
+      }
+   }
+
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -49,6 +104,10 @@ class Formscreenstate extends State<Formscreen> {
         email = value;
       },
     );
+  }
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
@@ -100,6 +159,20 @@ class Formscreenstate extends State<Formscreen> {
                       SizedBox(height: 15),
                       buildPasswordField(),
                       SizedBox(height: 5),
+                      Column(
+                        children: <Widget>[
+                          if (invalidCred)...[
+                            SizedBox(height: 5),
+                            Text(
+                              'Invalid Credentails',
+                              style: TextStyle(
+                                color:Colors.redAccent,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ]
+                        ],
+                      ),
                       Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -115,15 +188,12 @@ class Formscreenstate extends State<Formscreen> {
                                 fontSize: 20,
                               ),
                             ),
-                            onPressed: () {
+                            onPressed: () async {
                               if (!formKey.currentState.validate()) {
                                 return;
                               }
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => StudentHome()),
-                              );
+                              formKey.currentState.save();
+                              await getData(username,email);
                             },
                           )),
                       SizedBox(height: 5),
@@ -152,7 +222,7 @@ class Formscreenstate extends State<Formscreen> {
                                 borderRadius: BorderRadius.circular(15)),
                             color: Colors.pink,
                             child: Text(
-                              'Tutor',
+                              'Tutors',
                               style: TextStyle(
                                 fontSize: 20,
                               ),
