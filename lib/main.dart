@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/Tutor/AddSubject/add_subject.dart';
+import 'package:flutter_application_1/Tutor/ManageSubjects/manage_subjects.dart';
+import 'package:flutter_application_1/Tutor/Profile/edit_tutor.dart';
 import 'package:flutter_application_1/Tutor/Profile/tutor_profile.dart';
+import 'package:flutter_application_1/Tutor/TutorClass/class_request.dart';
+import 'package:flutter_application_1/Tutor/TutorClass/tutor_class.dart';
 import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Home/homepage_tutor.dart';
 import 'package:flutter_application_1/pages/Profile/edit_student.dart';
 import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Login/newlogins.dart';
@@ -28,6 +33,11 @@ class MyApp extends StatelessWidget {
         '/requestClass': (context)=> RequestClass(),
         '/tutorHome' : (context)=>TutorHome(),
         '/tutorProfile':(context)=> TutorProfile(),
+        '/addSubject':(context)=>AddSubject(),
+        '/manageSubjects':(context)=> ManageSubjects(),
+        '/tutorEdit':(context)=> TutorEdit(),
+        '/tutorClass':(context)=> TutorClass(),
+        '/tutorClassRequest':(context)=> TutorClassRequest(),
 
       },
       debugShowCheckedModeBanner: false,

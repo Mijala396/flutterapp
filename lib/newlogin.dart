@@ -206,11 +206,6 @@ class Formscreenstate extends State<Formscreen> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Registeroption()),
-                      );
                     },
                   )),
             ])));

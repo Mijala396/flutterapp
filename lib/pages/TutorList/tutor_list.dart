@@ -48,7 +48,9 @@ class _TutorListState extends State<TutorList> {
 
   @override
   Widget build(BuildContext context) {
+    // Catching the data that was sent.
     data = ModalRoute.of(context).settings.arguments;
+  print(data);
      return Scaffold(
          backgroundColor: Colors.grey[200],
          appBar: AppBar(
@@ -111,9 +113,11 @@ class _TutorListState extends State<TutorList> {
                           ),
                           FlatButton.icon(
                               onPressed:(){
+                                print(item);
                                 Navigator.pushNamed(context, '/requestClass',
                                 arguments: {
-                                  'id': item['tutor']
+                                  'id': item['tutor'],
+                                  'subject_name':item['subject_name'],
                                 });
                               },
                               label: Text('Make Request'),

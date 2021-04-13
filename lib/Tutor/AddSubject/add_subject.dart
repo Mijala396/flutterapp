@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 
-class Search extends StatefulWidget {
+class AddSubject extends StatefulWidget {
   @override
-  _SearchState createState() => _SearchState();
+  _AddSubjectState createState() => _AddSubjectState();
 }
 
-class _SearchState extends State<Search> {
+class _AddSubjectState extends State<AddSubject> {
   String _value = 'Maths';
   String value1 = "Highschool";
   String values;
 
-  Future<void> getTutors() async{
+  Future<void> addSubject() async{
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
 
-    try{
-      // Making a request to django
-        Response response = await get('http://10.0.2.2:8000/auth/search/?subject_name=$_value');
-        // Decoding Json data.
-        List data = jsonDecode(response.body);
+    final Response response = await post(
+      'http://10.0.2.2:8000/auth/add-subject/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization':"Bearer $token"
+      },
+      body:jsonEncode(<String, String>{
+          "subject_name": _value
+        }
+      )
+    );
 
-        // Sending data to tutor lIst and re routing.
-        Navigator.pushNamed(context, '/tutorList', arguments: {
-          'data':data
-        });
-    }
-    catch(Err){
-      print(Err);
-    }
+    Navigator.pushNamed(context, '/tutorProfile');
 
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -120,17 +121,17 @@ class _SearchState extends State<Search> {
                         borderRadius: BorderRadius.circular(15)),
                     color: Colors.pink,
                     child: Text(
-                      'Search',
+                      'Add',
                       style: TextStyle(
                         fontSize: 20,
                       ),
                     ),
                     onPressed: () {
 
-                      getTutors();
+                      addSubject();
 
                     },
                   )),
-            ])));
+            ])));;
   }
 }

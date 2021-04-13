@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 
 class TutorProfile extends StatefulWidget {
 
@@ -18,6 +19,7 @@ class _TutorProfileState extends State<TutorProfile> {
   String educationalInstitute='';
   String academicleveltoteach = '';
   int chargePerHour;
+  List subjects;
   Future<void> getUserInfo() async {
     // Pulling Data from SharedPreferences.
 
@@ -43,6 +45,7 @@ class _TutorProfileState extends State<TutorProfile> {
       academicleveltoteach = data[0]['academicleveltoteach'];
       address = data[0]['address'];
       chargePerHour = data[0]['chargePerHour'];
+      subjects =data[0]['subjects'];
     });
     print(data);
 
@@ -64,14 +67,40 @@ class _TutorProfileState extends State<TutorProfile> {
           backgroundColor: Colors.grey[850],
           elevation: 0,
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: (){
-            Navigator.pushNamed(context, '/edit');
-          },
-          child: Text('Edit'),
-          backgroundColor: Colors.lightBlue,
+        floatingActionButton: SpeedDial(
+              overlayOpacity: 0,
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.blueAccent,
+              closeManually: true,
+              elevation: 8,
+              children: [
+                SpeedDialChild(
+                  child: Icon(Icons.edit),
+                  label: "Edit Profile",
+                  onTap: (){
+                    Navigator.pushNamed(context, '/tutorEdit');
+                  }
+                ),
+                SpeedDialChild(
+                    child: Icon(Icons.book),
+                    label: "Add Subject",
+                    onTap: (){
+                      Navigator.pushNamed(context, '/addSubject');
+                    }
+                ),
+                SpeedDialChild(
+                    child: Icon(Icons.menu),
+                    label: "Manage Subjects",
+                    onTap: (){
+                      Navigator.pushNamed(context, '/manageSubjects',
+                      arguments: {
+                        'subjects':subjects
+                      }
+                      );
+                    }
+                ),
+              ],
         ),
-
         body:Padding(
           padding: EdgeInsets.all(30.0),
           child: Column(

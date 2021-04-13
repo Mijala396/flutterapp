@@ -46,12 +46,16 @@ class Formscreenstate extends State<Formscreen> {
 
 
         if(Authenticated){
-          __storejwt();
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => StudentHome()),
-          );
+          print(data['is_teacher']);
+          if(!data['is_teacher']){
+            __storejwt();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => StudentHome()),
+            );
+          }
+
         }
 
       setState(() {
