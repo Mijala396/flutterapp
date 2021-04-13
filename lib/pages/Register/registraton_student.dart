@@ -9,6 +9,9 @@ class _State extends State<StudentReg> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  String name;
+  String password;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +172,9 @@ class _State extends State<StudentReg> {
                           fontSize: 20,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        print(nameController.text);
+                      },
                     )),
               ],
             )));

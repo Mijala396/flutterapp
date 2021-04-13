@@ -1,31 +1,82 @@
 import 'package:flutter/material.dart';
-
-class Formscreen2 extends StatefulWidget {
+import 'package:http/http.dart';
+import 'dart:convert';
+class Formscreen3 extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return Formscreenstate();
   }
 }
 
-class Formscreenstate extends State<Formscreen2> {
-  String name;
+class Formscreenstate extends State<Formscreen3> {
+
+  String first_name;
+  String last_name;
+  String username;
   String email;
   String password;
   String address;
   String gender;
   String contactno;
-  String chargeperhour;
-  String qualification;
-  String educationalinstitute;
-  String academicleveltoteach;
+  String academiclevel;
+
+  @override
+
+
+  Future<void> registerStudent(String first_name, String last_name, String username,
+      String email,
+      String password,
+      String address,
+      String gender,
+      String contactno,
+      String academiclevel
+      ) async{
+      try{
+//        Response res  = await post('http://10.0.2.2:8000/auth/register/',body:{
+//
+//        });
+
+        final Response response = await post(
+          'http://10.0.2.2:8000/auth/register/',
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "first_name": first_name.trim(),
+            "last_name": last_name.trim(),
+            "username": username.trim(),
+            "password": password,
+            "address": address.trim(),
+            "gender": gender.trim(),
+            "contactno": contactno.trim(),
+            "email": email.trim(),
+            "academicLevel": academiclevel.trim()
+
+          }),
+        );
+
+        Map data = jsonDecode(response.body);
+        print(data);
+
+
+
+      }
+
+      catch(err){
+        print(err);
+      }
+  }
+
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Widget buildUNameField() {
+
+
+  Widget buildFirstNameField() {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter name',
+        labelText: 'Enter first name',
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -33,10 +84,45 @@ class Formscreenstate extends State<Formscreen2> {
         }
       },
       onSaved: (String value) {
-        password = value;
+        first_name = value;
       },
     );
   }
+
+  Widget buildLastNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Enter last name',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'please enter the name';
+        }
+      },
+      onSaved: (String value) {
+        last_name = value;
+      },
+    );
+  }
+
+  Widget buildUserNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Enter username',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'please enter your username';
+        }
+      },
+      onSaved: (String value) {
+        username = value;
+      },
+    );
+  }
+
 
   Widget buildaddressField() {
     return TextFormField(
@@ -123,80 +209,31 @@ class Formscreenstate extends State<Formscreen2> {
     );
   }
 
-  Widget buildchargeperhourField() {
+  Widget buildacademiclevelField() {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter chargeperhour',
+        labelText: 'Enter academiclevel',
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the chargeperhour';
+          return 'please enter the academiclevel';
         }
       },
       onSaved: (String value) {
-        chargeperhour = value;
+        academiclevel = value;
       },
     );
   }
 
-  Widget buildqualificationField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter qualification',
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the qualification';
-        }
-      },
-      onSaved: (String value) {
-        qualification = value;
-      },
-    );
-  }
 
-  Widget buildeducationalinstituteField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter educationalinstitute',
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the educationalinstitute';
-        }
-      },
-      onSaved: (String value) {
-        educationalinstitute = value;
-      },
-    );
-  }
-
-  Widget buildacademicleveltoteachField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter academicleveltoteach',
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the academicleveltoteach';
-        }
-      },
-      onSaved: (String value) {
-        academicleveltoteach = value;
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Registration section for tutor',
+            'Registration section for student',
           ),
         ),
         body: Padding(
@@ -209,7 +246,11 @@ class Formscreenstate extends State<Formscreen2> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      buildUNameField(),
+                      buildFirstNameField(),
+                      SizedBox(height: 10),
+                      buildLastNameField(),
+                      SizedBox(height: 10),
+                      buildUserNameField(),
                       SizedBox(height: 10),
                       buildPasswordField(),
                       SizedBox(height: 10),
@@ -221,13 +262,7 @@ class Formscreenstate extends State<Formscreen2> {
                       SizedBox(height: 10),
                       buildcontactField(),
                       SizedBox(height: 10),
-                      buildchargeperhourField(),
-                      SizedBox(height: 10),
-                      buildqualificationField(),
-                      SizedBox(height: 10),
-                      buildeducationalinstituteField(),
-                      SizedBox(height: 10),
-                      buildacademicleveltoteachField(),
+                      buildacademiclevelField(),
                       SizedBox(height: 10),
                       RaisedButton(
                         textColor: Colors.white,
@@ -239,8 +274,10 @@ class Formscreenstate extends State<Formscreen2> {
                           if (!formKey.currentState.validate()) {
                             return;
                           }
+                        formKey.currentState.save();
+                          registerStudent(first_name,last_name,username,email,password,address,gender
+                          ,contactno,academiclevel);
 
-                          formKey.currentState.save();
                         },
                       )
                     ],

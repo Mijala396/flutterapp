@@ -35,7 +35,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.pushNamed(context, '/tutorProfile');
                       },
                     )),
                 Container(
@@ -54,7 +54,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.pushNamed(context, '/tutorClassRequest');
                       },
                     )),
                 Container(
@@ -73,7 +73,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.pushNamed(context, '/tutorClass');
                       },
                     )),
                 Container(

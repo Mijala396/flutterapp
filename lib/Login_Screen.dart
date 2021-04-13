@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter_application_1/registration_option.dart';
-import 'package:flutter_application_1/homepage_student.dart';
-import 'package:flutter_application_1/homepage_tutor.dart';
-import 'package:flutter_application_1/registration_form.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Home/homepage_student.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Home/homepage_tutor.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Registration/registration_form.dart';
 
 class LoginPage extends StatefulWidget {
   @override

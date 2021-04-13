@@ -1,52 +1,120 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:http/http.dart';
 
-class Formscreen3 extends StatefulWidget {
+class TutorEdit extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    return Formscreenstate();
-  }
+  _TutorEditState createState() => _TutorEditState();
 }
 
-class Formscreenstate extends State<Formscreen3> {
-  String name;
+class _TutorEditState extends State<TutorEdit> {
+  String first_name;
+  String last_name;
+  String username;
   String email;
   String password;
   String address;
   String gender;
   String contactno;
   String academiclevel;
-  String educationalinstitute;
+
+  @override
+
+
+  Future<void> updateStudent(String first_name, String last_name, String username,
+      String email,
+      String password,
+      String address,
+      String gender,
+      String contactno,
+      String academiclevel
+      ) async{
+
+
+    try{
+      var editableData = new Map();
+
+      print(first_name.isEmpty);
+      if(first_name.isNotEmpty)editableData['first_name']=first_name;
+      if(last_name.isNotEmpty) editableData['last_name']=last_name;
+      if(email.isNotEmpty) editableData['email']=email;
+
+      print(editableData);
+      final pref = await SharedPreferences.getInstance();
+      final token = pref.getString('token');
+
+      final Response response = await patch(
+        'http://10.0.2.2:8000/auth/getUsers/',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization':"Bearer $token"
+        },
+        body: jsonEncode(editableData),
+      );
+
+      Map data = jsonDecode(response.body);
+
+      Navigator.pushReplacementNamed(context, '/profile');
+
+
+
+
+    }
+
+    catch(err){
+      print(err);
+    }
+  }
+
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Widget buildUNameField() {
+
+
+  Widget buildFirstNameField() {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter name',
+        labelText: 'Edit first name',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the name';
-        }
-      },
       onSaved: (String value) {
-        password = value;
+        first_name = value;
       },
     );
   }
+
+  Widget buildLastNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Edit last name',
+      ),
+      onSaved: (String value) {
+        last_name = value;
+      },
+    );
+  }
+
+  Widget buildUserNameField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Edit username',
+      ),
+      onSaved: (String value) {
+        username = value;
+      },
+    );
+  }
+
 
   Widget buildaddressField() {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter address',
+        labelText: 'Edit address',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the address';
-        }
-      },
       onSaved: (String value) {
         address = value;
       },
@@ -57,13 +125,8 @@ class Formscreenstate extends State<Formscreen3> {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter email',
+        labelText: 'Edit email',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the email';
-        }
-      },
       onSaved: (String value) {
         email = value;
       },
@@ -74,13 +137,8 @@ class Formscreenstate extends State<Formscreen3> {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter password',
+        labelText: 'Edit password',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the password';
-        }
-      },
       onSaved: (String value) {
         password = value;
       },
@@ -93,11 +151,6 @@ class Formscreenstate extends State<Formscreen3> {
         border: OutlineInputBorder(),
         labelText: 'Enter gender',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the gender';
-        }
-      },
       onSaved: (String value) {
         gender = value;
       },
@@ -110,11 +163,6 @@ class Formscreenstate extends State<Formscreen3> {
         border: OutlineInputBorder(),
         labelText: 'Enter contactno',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the contactno';
-        }
-      },
       onSaved: (String value) {
         contactno = value;
       },
@@ -127,40 +175,20 @@ class Formscreenstate extends State<Formscreen3> {
         border: OutlineInputBorder(),
         labelText: 'Enter academiclevel',
       ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the academiclevel';
-        }
-      },
       onSaved: (String value) {
         academiclevel = value;
       },
     );
   }
 
-  Widget buildeducationalinstituteField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter educationalinstitute',
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the educationalinstitute';
-        }
-      },
-      onSaved: (String value) {
-        educationalinstitute = value;
-      },
-    );
-  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            'Registration section for student',
+            'Edit your profile',
           ),
         ),
         body: Padding(
@@ -173,7 +201,11 @@ class Formscreenstate extends State<Formscreen3> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      buildUNameField(),
+                      buildFirstNameField(),
+                      SizedBox(height: 10),
+                      buildLastNameField(),
+                      SizedBox(height: 10),
+                      buildUserNameField(),
                       SizedBox(height: 10),
                       buildPasswordField(),
                       SizedBox(height: 10),
@@ -187,20 +219,20 @@ class Formscreenstate extends State<Formscreen3> {
                       SizedBox(height: 10),
                       buildacademiclevelField(),
                       SizedBox(height: 10),
-                      buildeducationalinstituteField(),
-                      SizedBox(height: 10),
                       RaisedButton(
                         textColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15)),
                         color: Colors.pink,
-                        child: Text('Register'),
+                        child: Text('Edit'),
                         onPressed: () {
                           if (!formKey.currentState.validate()) {
                             return;
                           }
-
                           formKey.currentState.save();
+                          updateStudent(first_name,last_name,username,email,password,address,gender
+                              ,contactno,academiclevel);
+
                         },
                       )
                     ],

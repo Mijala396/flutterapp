@@ -1,18 +1,78 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_1/registration_form.dart';
-import 'package:flutter_application_1/homepage_student.dart';
-import 'package:flutter_application_1/homepage_tutor.dart';
-
-class Formscreentutor extends StatefulWidget {
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Register/registration_form2.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Home/homepage_student.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Home/homepage_tutor.dart';
+import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Login/Tutorlogin.dart';
+import 'package:http/http.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+class Formscreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return Formscreentutorstate();
+    return Formscreenstate();
   }
 }
 
-class Formscreentutorstate extends State<Formscreentutor> {
+class Formscreenstate extends State<Formscreen> {
   String username;
   String email;
+  bool invalidCred = false;
+
+
+   Future<void> getData(String email, String password) async {
+     print(email.trim());
+     print(password);
+      try{
+
+        final Response response = await post(
+          'http://10.0.2.2:8000/auth/login/',
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+          },
+          body: jsonEncode(<String, String>{
+            "email":email.trim(),
+            "password":password,
+          }),
+        );
+        Map data = jsonDecode(response.body);
+        print(data);
+        Future<void> __storejwt() async{
+          final pref = await SharedPreferences.getInstance();
+          await pref.setString('token', data['tokens']['access']);
+          final token = pref.getString('token');
+          print(token);
+        }
+        bool Authenticated = data.containsKey('tokens');
+
+
+        if(Authenticated){
+          print(data['is_teacher']);
+          if(!data['is_teacher']){
+            __storejwt();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => StudentHome()),
+            );
+          }
+
+        }
+
+      setState(() {
+        invalidCred=true;
+      });
+      print('Invalid Credentials');
+
+
+      }
+      catch(e){
+        print('There was an error');
+        setState(() {
+          invalidCred=true;
+        });
+      }
+   }
+
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -49,6 +109,10 @@ class Formscreentutorstate extends State<Formscreentutor> {
       },
     );
   }
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,7 +135,7 @@ class Formscreentutorstate extends State<Formscreentutor> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    'Welcome Tutor!',
+                    'Welcome!',
                     style: TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.w500,
@@ -99,49 +163,82 @@ class Formscreentutorstate extends State<Formscreentutor> {
                       SizedBox(height: 15),
                       buildPasswordField(),
                       SizedBox(height: 5),
+                      Column(
+                        children: <Widget>[
+                          if (invalidCred)...[
+                            SizedBox(height: 5),
+                            Text(
+                              'Invalid Credentails',
+                              style: TextStyle(
+                                color:Colors.redAccent,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ]
+                        ],
+                      ),
                       Container(
                           alignment: Alignment.center,
-                          margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                           padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                          child: Text(
-                            'login as:',
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15),
-                          )),
-                      SizedBox(height: 5),
-                      new Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          new RaisedButton(
-                            padding: EdgeInsets.fromLTRB(50, 10, 50, 10),
+                          child: RaisedButton(
                             textColor: Colors.white,
-                            color: Colors.pink,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15)),
+                            color: Colors.pink,
                             child: Text(
-                              "Login for tutor",
+                              'Login for student',
                               style: TextStyle(
                                 fontSize: 20,
                               ),
                             ),
-                            elevation: 5.0,
-                            onPressed: () {
+                            onPressed: () async {
                               if (!formKey.currentState.validate()) {
                                 return;
                               }
-
                               formKey.currentState.save();
+                              await getData(username,email);
+                            },
+                          )),
+                      SizedBox(height: 5),
+                      Container(
+                          margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+                          height: 50,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: Row(
+                            children: <Widget>[
+                              Text(
+                                'If you are a tutor sign in here:',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
+                              ),
+                            ],
+                            mainAxisAlignment: MainAxisAlignment.center,
+                          )),
+                      Container(
+                          alignment: Alignment.center,
+                          height: 50,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+                          child: RaisedButton(
+                            textColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            color: Colors.pink,
+                            child: Text(
+                              'Tutors',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => TutorHome()),
-                              ); // Do something here
+                                    builder: (context) => Formscreentutor()),
+                              );
                             },
-                          ),
-                        ],
-                      ),
+                          )),
                     ],
                   ),
                 ),
@@ -179,7 +276,7 @@ class Formscreentutorstate extends State<Formscreentutor> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Formscreen2()),
+                        MaterialPageRoute(builder: (context) => Formscreen3()),
                       );
                     },
                   )),
