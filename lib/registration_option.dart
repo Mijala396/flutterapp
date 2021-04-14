@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/Tutor/Registration/registration_form.dart';
-import 'file:///E:/Andriod%20Projetcs/Fyp/flutterapp/lib/pages/Register/registration_form2.dart';
+import 'package:flutter_application_1/Tutor/Registration/registration_form.dart';
+import 'package:flutter_application_1/pages/Register/registration_form2.dart';
 //import 'package:flutter_application_1/registration_tutor.dart';
 //import 'package:flutter_application_1/registraton_student.dart';
 
