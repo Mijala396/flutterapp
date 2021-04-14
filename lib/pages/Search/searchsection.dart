@@ -9,28 +9,23 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   String _value = 'Maths';
-  String value1 = "Highschool";
+  String value1 = "highschool";
   String values;
 
-  Future<void> getTutors() async{
-
-    try{
+  Future<void> getTutors() async {
+    try {
       // Making a request to django
-        Response response = await get('http://10.0.2.2:8000/auth/search/?subject_name=$_value');
-        // Decoding Json data.
-        List data = jsonDecode(response.body);
+      Response response =
+          await get('http://10.0.2.2:8000/auth/search/?subject_name=$_value');
+      // Decoding Json data.
+      List data = jsonDecode(response.body);
 
-        // Sending data to tutor lIst and re routing.
-        Navigator.pushNamed(context, '/tutorList', arguments: {
-          'data':data
-        });
-    }
-    catch(Err){
+      // Sending data to tutor lIst and re routing.
+      Navigator.pushNamed(context, '/tutorList', arguments: {'data': data});
+    } catch (Err) {
       print(Err);
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -110,6 +105,71 @@ class _SearchState extends State<Search> {
                         })),
               ),
               Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    'Select academic level',
+                    style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 20),
+                  )),
+              Container(
+                padding: EdgeInsets.all(20.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.pink,
+                ),
+                child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        value: value1,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text(
+                              " Primary",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 20,
+                              ),
+                            ),
+                            value: 'primary',
+                          ),
+                          DropdownMenuItem(
+                            child: Text(
+                              "secondary",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 20,
+                              ),
+                            ),
+                            value: 'secondary',
+                          ),
+                          DropdownMenuItem(
+                              child: Text(
+                                "Middleschool",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              value: 'middleschool'),
+                          DropdownMenuItem(
+                              child: Text(
+                                "highschool",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              value: 'highschool')
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            value1 = value;
+                          });
+                        })),
+              ),
+              Container(
                   margin: EdgeInsets.fromLTRB(0, 150, 0, 0),
                   alignment: Alignment.center,
                   height: 50,
@@ -126,9 +186,7 @@ class _SearchState extends State<Search> {
                       ),
                     ),
                     onPressed: () {
-
                       getTutors();
-
                     },
                   )),
             ])));
