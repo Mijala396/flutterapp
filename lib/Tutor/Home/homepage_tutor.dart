@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/Login_Screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TutorHome extends StatefulWidget {
   @override
@@ -129,11 +130,10 @@ class _State extends State<TutorHome> {
                           fontSize: 25,
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => LoginPage()),
-                        ); //signup screen
+                      onPressed: () async {
+                        final pref = await SharedPreferences.getInstance();
+                        await pref.setString('token', '');
+                        Navigator.pushReplacementNamed(context, '/');
                       },
                     )),
               ],

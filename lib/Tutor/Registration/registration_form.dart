@@ -22,41 +22,36 @@ class Formscreenstate extends State<Formscreen2> {
   String chargeperhour;
   String qualification;
   String educationalinstitute;
-  String academicleveltoteach;
+  String _value = 'Primary-level(1-5)';
   bool isTeacher = true;
 
-  Future<void> registerTutor() async{
-      try{
+  Future<void> registerTutor() async {
+    try {
+      final Response response = await post(
+        'http://10.0.2.2:8000/auth/register/',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, dynamic>{
+          "first_name": first_name.trim(),
+          "last_name": last_name.trim(),
+          "username": username.trim(),
+          "password": password,
+          "address": address.trim(),
+          "gender": gender.trim(),
+          "contactno": int.parse(contactno.trim()),
+          "email": email.trim(),
+          "educationalInstitute": educationalinstitute.trim(),
+          "academicleveltoteach": _value.trim(),
+          "is_teacher": isTeacher,
+        }),
+      );
 
-        final Response response = await post(
-          'http://10.0.2.2:8000/auth/register/',
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String,dynamic>{
-            "first_name": first_name.trim(),
-            "last_name": last_name.trim(),
-            "username": username.trim(),
-            "password": password,
-            "address": address.trim(),
-            "gender": gender.trim(),
-            "contactno": int.parse(contactno.trim()),
-            "email": email.trim(),
-            "educationalInstitute": educationalinstitute.trim(),
-            "academicleveltoteach": academicleveltoteach.trim(),
-            "is_teacher": isTeacher,
-
-          }),
-        );
-
-        Map data = jsonDecode(response.body);
-      }
-
-      catch(err){
-        print('Error occured');
-      }
+      Map data = jsonDecode(response.body);
+    } catch (err) {
+      print('Error occured');
+    }
   }
-
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -68,7 +63,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the name';
+          return 'Please enter the name';
         }
       },
       onSaved: (String value) {
@@ -102,7 +97,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the name';
+          return 'Please enter the last name';
         }
       },
       onSaved: (String value) {
@@ -119,7 +114,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the name';
+          return 'please enter the username';
         }
       },
       onSaved: (String value) {
@@ -127,7 +122,6 @@ class Formscreenstate extends State<Formscreen2> {
       },
     );
   }
-
 
   Widget buildaddressField() {
     return TextFormField(
@@ -154,7 +148,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the email';
+          return 'Please enter the email';
         }
       },
       onSaved: (String value) {
@@ -171,7 +165,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the password';
+          return 'Please enter the password';
         }
       },
       onSaved: (String value) {
@@ -188,7 +182,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the gender';
+          return 'Please enter the gender';
         }
       },
       onSaved: (String value) {
@@ -205,7 +199,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the contactno';
+          return 'Please enter the contactno';
         }
       },
       onSaved: (String value) {
@@ -222,7 +216,7 @@ class Formscreenstate extends State<Formscreen2> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the chargeperhour';
+          return 'Please enter the chargeperhour';
         }
       },
       onSaved: (String value) {
@@ -260,27 +254,135 @@ class Formscreenstate extends State<Formscreen2> {
         }
       },
       onSaved: (String value) {
-        educationalinstitute = value;
+        qualification = value;
       },
     );
   }
 
-  Widget buildacademicleveltoteachField() {
-    return TextFormField(
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        labelText: 'Enter academicleveltoteach',
-      ),
-      validator: (String value) {
-        if (value.isEmpty) {
-          return 'please enter the academicleveltoteach';
-        }
-      },
-      onSaved: (String value) {
-        academicleveltoteach = value;
-      },
-    );
+  Widget buildDropDown() {
+    return DropdownButton(
+        value: _value,
+        items: [
+          DropdownMenuItem(
+            child: Text(
+              "Primary-level(1-5)",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+              ),
+            ),
+            value: 'Primary-level(1-5)',
+          ),
+          DropdownMenuItem(
+            child: Text(
+              "Lower-secondary-level(6-8)",
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 20,
+              ),
+            ),
+            value: 'Lower-secondary-level(6-8)',
+          ),
+          DropdownMenuItem(
+              child: Text(
+                "Secondary-level(9-10)",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20,
+                ),
+              ),
+              value: 'Secondary-level(9-10)'),
+          DropdownMenuItem(
+              child: Text(
+                "High_School(11-12)",
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontSize: 20,
+                ),
+              ),
+              value: 'High_School(11-12)')
+        ],
+        onChanged: (value) {
+          setState(() {
+            print(value);
+            _value = value;
+          });
+        });
   }
+
+  // Widget buildacademicleveltoeachField() {
+  //   return TextFormField(
+  //       body: Padding(
+  //           padding: EdgeInsets.all(10),
+  //           child: ListView(children: <Widget>[
+  //             Container(
+  //                 alignment: Alignment.center,
+  //                 padding: EdgeInsets.all(10),
+  //                 child: Text(
+  //                   'Select academic level',
+  //                   style: TextStyle(
+  //                       color: Colors.grey,
+  //                       fontWeight: FontWeight.w500,
+  //                       fontSize: 20),
+  //                 )),
+  //             Container(
+  //               padding: EdgeInsets.all(20.0),
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(10.0),
+  //                 color: Colors.pink,
+  //               ),
+  //               child: DropdownButtonHideUnderline(
+  //                   child: DropdownButton(
+  //                       value: academicleveltoteach,
+  //                       items: [
+  //                         DropdownMenuItem(
+  //                           child: Text(
+  //                             " Primary",
+  //                             style: TextStyle(
+  //                               color: Colors.grey,
+  //                               fontSize: 20,
+  //                             ),
+  //                           ),
+  //                           value: 'primary',
+  //                         ),
+  //                         DropdownMenuItem(
+  //                           child: Text(
+  //                             "secondary",
+  //                             style: TextStyle(
+  //                               color: Colors.grey,
+  //                               fontSize: 20,
+  //                             ),
+  //                           ),
+  //                           value: 'secondary',
+  //                         ),
+  //                         DropdownMenuItem(
+  //                             child: Text(
+  //                               "Middleschool",
+  //                               style: TextStyle(
+  //                                 color: Colors.grey,
+  //                                 fontSize: 20,
+  //                               ),
+  //                             ),
+  //                             value: 'middleschool'),
+  //                         DropdownMenuItem(
+  //                             child: Text(
+  //                               "highschool",
+  //                               style: TextStyle(
+  //                                 color: Colors.grey,
+  //                                 fontSize: 20,
+  //                               ),
+  //                             ),
+  //                             value: 'highschool')
+  //                       ],
+  //                       onChanged: (value) {
+  //                         setState(() {
+  //                           academicleveltoteach = value;
+  //                         });
+  //                       })),
+  //             ),
+
+  //           ])));
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -322,7 +424,18 @@ class Formscreenstate extends State<Formscreen2> {
                       SizedBox(height: 10),
                       buildeducationalinstituteField(),
                       SizedBox(height: 10),
-                      buildacademicleveltoteachField(),
+                      Container(
+                          alignment: Alignment.center,
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'Select academic level',
+                            style: TextStyle(
+                                color: Colors.grey,
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20),
+                          )),
+                      SizedBox(height: 10),
+                      buildDropDown(),
                       SizedBox(height: 10),
                       RaisedButton(
                         textColor: Colors.white,

@@ -4,7 +4,6 @@ import 'package:flutter_application_1/pages/Search/Searchsection.dart';
 import 'package:flutter_application_1/pages/Profile/student_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 class StudentHome extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _State();
@@ -81,7 +80,8 @@ class _State extends State<StudentHome> {
                         ),
                       ),
                       onPressed: () {
-                        //signup screen
+                        Navigator.pushNamed(context, '/studentclassview');
+                        //view class screen
                       },
                     )),
                 Container(
