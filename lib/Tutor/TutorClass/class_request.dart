@@ -22,7 +22,10 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
       },
     );
 
-    sessions = jsonDecode(response.body);
+    List data = jsonDecode(response.body);
+    setState(() {
+      sessions = data;
+    });
 
     print('-------Sessions------');
 
@@ -31,9 +34,22 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
     print('-------Sessions------');
   }
 
+  Future<void> updateStatus(id) async {
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
+
+    final Response response = await patch(
+      'http://10.0.2.2:8000/auth/approve-status/$id/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+  }
+
   @override
   void initState() {
-    getSessionsRequest();
+    getSessionsRequest(); //page load hunu agadi data leyera dekhauna.
     super.initState();
   }
 
@@ -120,7 +136,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                   children: <Widget>[
                                     FlatButton.icon(
                                         onPressed: () {
-                                          //getAcceptrequest(item['data']);
+                                          updateStatus(item["id"]);
                                         },
                                         label: Text('Accept request'),
                                         icon: Icon(Icons.info)),

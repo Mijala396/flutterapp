@@ -14,35 +14,32 @@ class _RequestClassState extends State<RequestClass> {
   TimeOfDay _time;
   String message;
   String _sessionDuration;
+  String _sessiondays;
 
-  Future<void> sendRequest() async{
-        String dateString = _startDateTime.toString();
-        print(dateString);
-        final pref = await SharedPreferences.getInstance();
-        final token = pref.getString('token');
+  Future<void> sendRequest() async {
+    String dateString = _startDateTime.toString();
+    print(dateString);
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
 
-        final Response response = await post(
-            'http://10.0.2.2:8000/auth/request-session/',
+    final Response response =
+        await post('http://10.0.2.2:8000/auth/request-session/',
             headers: <String, String>{
               'Content-Type': 'application/json; charset=UTF-8',
-              'Authorization':"Bearer $token"
+              'Authorization': "Bearer $token"
             },
-            body:jsonEncode(<String, dynamic>{
+            body: jsonEncode(<String, dynamic>{
               "subject": data['subject_name'],
-              "tutor":data['id'],
-              "session_date":dateString,
-              "session_time":_time.toString(),
-              "session_duration":_sessionDuration,
-              "message":message
-            }
-            )
-        );
+              "tutor": data['id'],
+              "session_date": dateString,
+              "session_time": _time.toString(),
+              "session_duration": _sessionDuration,
+              "session_days": _sessiondays,
+              "message": message
+            }));
 
-        Navigator.pushReplacementNamed(context, '/tutorHome');
-
+    Navigator.pushReplacementNamed(context, '/StudentHome');
   }
-
-
 
   Widget buildsessionDurationField() {
     return TextFormField(
@@ -52,14 +49,34 @@ class _RequestClassState extends State<RequestClass> {
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the name';
+          return 'please enter the number of days.';
         }
       },
       onSaved: (String value) {
         _sessionDuration = value;
       },
-      onChanged: (String value){
+      onChanged: (String value) {
         _sessionDuration = value;
+      },
+    );
+  }
+
+  Widget buildsessionDayField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Enter Session days',
+      ),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'please enter number of days.';
+        }
+      },
+      onSaved: (String value) {
+        _sessiondays = value;
+      },
+      onChanged: (String value) {
+        _sessiondays = value;
       },
     );
   }
@@ -69,7 +86,7 @@ class _RequestClassState extends State<RequestClass> {
     data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title:Text('Class Request'),
+        title: Text('Class Request'),
         centerTitle: true,
         backgroundColor: Colors.redAccent,
       ),
@@ -84,61 +101,73 @@ class _RequestClassState extends State<RequestClass> {
                   children: <Widget>[
                     RaisedButton(
                       child: Text('Start Date'),
-                      onPressed: (){
-                        showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(),
-                            lastDate: DateTime(2022)).then((date){
+                      onPressed: () {
+                        showDatePicker(
+                                context: context,
+                                initialDate: DateTime.now(),
+                                firstDate: DateTime.now(),
+                                lastDate: DateTime(2022))
+                            .then((date) {
                           setState(() {
                             _startDateTime = date;
                           });
-                        }
-                        );
+                        });
                       },
                     ),
-                    SizedBox(width: 10,),
-                    Text(_startDateTime == null ?'Not picked a start date Yet': _startDateTime.toString()),
-
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(_startDateTime == null
+                        ? 'Not picked a start date Yet'
+                        : _startDateTime.toString()),
                   ],
                 ),
               ),
-
-
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
                   children: <Widget>[
                     RaisedButton(
                       child: Text('Start Time'),
-                      onPressed: (){
-                          showTimePicker(context: context, initialTime: TimeOfDay.now(),).then((date){
+                      onPressed: () {
+                        showTimePicker(
+                          context: context,
+                          initialTime: TimeOfDay.now(),
+                        ).then((date) {
                           setState(() {
                             _time = date;
                           });
-                        }
-                        );
+                        });
                       },
                     ),
-                    SizedBox(width: 10,),
-                    Text(_time == null ?'Not picked a start time yet': _time.toString()),
-
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(_time == null
+                        ? 'Not picked a start time yet'
+                        : _time.toString()),
                   ],
                 ),
               ),
-
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               buildsessionDurationField(),
-
+              SizedBox(
+                height: 10,
+              ),
+              buildsessionDayField(),
               TextField(
                 maxLines: 4,
-                decoration: InputDecoration(
-                  labelText: 'Send a message'
-                ),
-                onChanged: (text){
+                decoration: InputDecoration(labelText: 'Send a message'),
+                onChanged: (text) {
                   message = text;
                   print(text);
-
                 },
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               RaisedButton(
                 textColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -151,13 +180,9 @@ class _RequestClassState extends State<RequestClass> {
                   ),
                 ),
                 onPressed: () {
-
                   sendRequest();
-
                 },
-
               ),
-
             ],
           ),
         ),

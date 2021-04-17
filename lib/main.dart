@@ -6,6 +6,7 @@ import 'package:flutter_application_1/Tutor/Profile/tutor_profile.dart';
 import 'package:flutter_application_1/Tutor/TutorClass/class_request.dart';
 import 'package:flutter_application_1/Tutor/TutorClass/tutor_class.dart';
 import 'package:flutter_application_1/Tutor/Home/homepage_tutor.dart';
+import 'package:flutter_application_1/pages/Home/homepage_student.dart';
 import 'package:flutter_application_1/pages/Profile/edit_student.dart';
 import 'package:flutter_application_1/pages/Login/newlogins.dart';
 import 'package:flutter_application_1/pages/Profile/student_profile.dart';
@@ -13,6 +14,7 @@ import 'package:flutter_application_1/pages/RequestClass/request_class.dart';
 import 'package:flutter_application_1/pages/TutorDetails/tutor_details.dart';
 import 'package:flutter_application_1/pages/TutorList/tutor_list.dart';
 import 'package:flutter_application_1/pages/TutorRating/tutor_ratings.dart';
+import 'package:flutter_application_1/pages/RequestClass/view_class.dart';
 
 void main() {
   runApp(MyApp());
@@ -38,6 +40,8 @@ class MyApp extends StatelessWidget {
         '/tutorEdit': (context) => TutorEdit(),
         '/tutorClass': (context) => TutorClass(),
         '/tutorClassRequest': (context) => TutorClassRequest(),
+        '/studentclassview': (context) => StudentClass(),
+        '/StudentHome': (context) => StudentHome(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Application',
