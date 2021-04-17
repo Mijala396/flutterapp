@@ -7,6 +7,7 @@ import 'package:flutter_application_1/Tutor/TutorClass/class_request.dart';
 import 'package:flutter_application_1/Tutor/TutorClass/tutor_class.dart';
 import 'package:flutter_application_1/Tutor/Home/homepage_tutor.dart';
 import 'package:flutter_application_1/pages/Home/homepage_student.dart';
+import 'package:flutter_application_1/pages/Notification/notification.dart';
 import 'package:flutter_application_1/pages/Profile/edit_student.dart';
 import 'package:flutter_application_1/pages/Login/newlogins.dart';
 import 'package:flutter_application_1/pages/Profile/student_profile.dart';
@@ -42,6 +43,7 @@ class MyApp extends StatelessWidget {
         '/tutorClassRequest': (context) => TutorClassRequest(),
         '/studentclassview': (context) => StudentClass(),
         '/StudentHome': (context) => StudentHome(),
+        '/StudentNotification':(context)=> StudentNotification(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Application',

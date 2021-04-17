@@ -50,7 +50,6 @@ class _TutorListState extends State<TutorList> {
   Widget build(BuildContext context) {
     // Catching the data that was sent.
     data = ModalRoute.of(context).settings.arguments;
-  print(data);
      return Scaffold(
          backgroundColor: Colors.grey[200],
          appBar: AppBar(
