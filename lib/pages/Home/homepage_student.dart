@@ -3,7 +3,7 @@ import 'package:flutter_application_1/Login_Screen.dart';
 import 'package:flutter_application_1/pages/Search/Searchsection.dart';
 import 'package:flutter_application_1/pages/Profile/student_profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class StudentHome extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _State();
@@ -140,6 +140,15 @@ class _State extends State<StudentHome> {
                       onPressed: () async {
                         final pref = await SharedPreferences.getInstance();
                         await pref.setString('token', '');
+                        Fluttertoast.showToast(
+                            msg: "Sucessfully Logged Out ",
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIos: 1,
+                            backgroundColor: Colors.pink,
+                            textColor: Colors.white,
+                            fontSize: 16.0
+                        );
                         Navigator.pushReplacementNamed(context, '/');
                       },
                     )),

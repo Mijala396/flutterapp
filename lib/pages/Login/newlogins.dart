@@ -6,7 +6,7 @@ import 'package:flutter_application_1/Tutor/Login/Tutorlogin.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class Formscreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -48,10 +48,20 @@ class Formscreenstate extends State<Formscreen> {
         print(data['is_teacher']);
         if (!data['is_teacher']) {
           __storejwt();
-          Navigator.pushReplacement(
+          Fluttertoast.showToast(
+              msg: "Login is Sucessful",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIos: 1,
+              backgroundColor: Colors.pink,
+              textColor: Colors.white,
+              fontSize: 16.0
+          );
+        return Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => StudentHome()),
           );
+
         }
       }
 
