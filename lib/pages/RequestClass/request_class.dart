@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RequestClass extends StatefulWidget {
   @override
@@ -37,6 +40,15 @@ class _RequestClassState extends State<RequestClass> {
               "session_days": _sessiondays,
               "message": message
             }));
+    Fluttertoast.showToast(
+        msg: "Sucessfully Sent a Request ",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        backgroundColor: Colors.pink,
+        textColor: Colors.white,
+        fontSize: 16.0
+    );
 
     Navigator.pushReplacementNamed(context, '/StudentHome');
   }
@@ -102,18 +114,14 @@ class _RequestClassState extends State<RequestClass> {
                     RaisedButton(
                       child: Text('Start Date'),
                       onPressed: () {
-                        showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(2022))
-                            .then((date) {
-                          setState(() {
-                            _startDateTime = date;
-                          });
-                        });
+                        DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
+                        }, onConfirm: (date) {
+                          _startDateTime = date;
+                          print('Current $date');
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                     ),
+
                     SizedBox(
                       width: 10,
                     ),

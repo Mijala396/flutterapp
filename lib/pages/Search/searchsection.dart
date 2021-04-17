@@ -20,6 +20,12 @@ class _SearchState extends State<Search> {
       // Decoding Json data.
       List data = jsonDecode(response.body);
 
+      List filteredDate = data.where((element) => element['tutor_academic_level']==value1).toList();
+
+      print('-----Filtered Date');
+      print(filteredDate);
+      print('-----Filtered Date');
+
       // Sending data to tutor lIst and re routing.
       Navigator.pushNamed(context, '/tutorList', arguments: {'data': data});
     } catch (Err) {
@@ -161,7 +167,16 @@ class _SearchState extends State<Search> {
                                   fontSize: 20,
                                 ),
                               ),
-                              value: 'highschool')
+                              value: 'highschool'),
+                          DropdownMenuItem(
+                              child: Text(
+                                "Bachelors",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              value: 'Bachelors')
                         ],
                         onChanged: (value) {
                           setState(() {
