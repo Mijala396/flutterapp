@@ -3,19 +3,15 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
-
 class StudentNotification extends StatefulWidget {
   @override
   _StudentNotificationState createState() => _StudentNotificationState();
 }
 
 class _StudentNotificationState extends State<StudentNotification> {
-  List finalData=[];
+  List finalData = [];
 
-
-  Future<void> getSessoionsforNotification() async{
-
+  Future<void> getSessoionsforNotification() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
 
@@ -23,26 +19,25 @@ class _StudentNotificationState extends State<StudentNotification> {
       'http://10.0.2.2:8000/auth/session-approved/',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':"Bearer $token"
+        'Authorization': "Bearer $token"
       },
     );
 
     List data = jsonDecode(response.body);
 
-    final today = (DateTime.now().toString()).substring(0,10);
+    final today = (DateTime.now().toString()).substring(0, 10);
     setState(() {
-      finalData =  data.where((element) => (element['session_date'].substring(0,10)==today)).toList();
+      finalData = data
+          .where(
+              (element) => (element['session_date'].substring(0, 10) == today))
+          .toList();
     });
-
-
-
   }
 
   @override
   void initState() {
     getSessoionsforNotification();
     super.initState();
-
   }
 
   @override
@@ -52,36 +47,34 @@ class _StudentNotificationState extends State<StudentNotification> {
           title: Text(
             'Notifications',
           ),
+          backgroundColor: Colors.pink,
         ),
-        body:SingleChildScrollView(
+        body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: finalData.map<Widget>((item)=>Column(
-          children: <Widget>[
-    Card(
-    margin: EdgeInsets.fromLTRB(16,16,16,0),
-    child: Padding(
-    padding: const EdgeInsets.all(12.0),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: <Widget>[
-    Text(
-    'You have ${item['subject']} class today ${item['session_date']}',
-          style: TextStyle(
-          fontSize: 18.0,
-          color:Colors.grey[800]
-               ),
-             ),
-          ],
-         ),
-        ),
-    )
-
-    ],
-    )).toList(),
-    ),
-
+            children: finalData
+                .map<Widget>((item) => Column(
+                      children: <Widget>[
+                        Card(
+                          margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: <Widget>[
+                                Text(
+                                  'You have ${item['subject']} class today ${item['session_date']}',
+                                  style: TextStyle(
+                                      fontSize: 18.0, color: Colors.grey[800]),
+                                ),
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ))
+                .toList(),
+          ),
         ));
   }
-
 }
