@@ -10,6 +10,7 @@ class TutorClassRequest extends StatefulWidget {
 
 class _TutorClassRequestState extends State<TutorClassRequest> {
   List sessions = [];
+  int totalcost;
   Future<void> getSessionsRequest() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
@@ -45,6 +46,23 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
         'Authorization': "Bearer $token"
       },
     );
+
+    final Response response1 = await post(
+      'http://10.0.2.2:8000/auth/bill/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "Payment_type": "Online",
+        "session_cost": totalcost,
+        "seession": id,
+        "bill_date": "today"
+      }),
+    );
+  }
+
+  void calculateCost(duration, day, charge) {
+    totalcost = duration * day * charge;
   }
 
   @override
@@ -136,6 +154,10 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                   children: <Widget>[
                                     FlatButton.icon(
                                         onPressed: () {
+                                          calculateCost(
+                                              item["session_duration"],
+                                              item["session_days"],
+                                              item["tutor_chargePerHour"]);
                                           updateStatus(item["id"]);
                                         },
                                         label: Text('Accept request'),

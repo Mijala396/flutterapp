@@ -7,6 +7,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+
 class StudentHome extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => new _State();
@@ -15,72 +17,86 @@ class StudentHome extends StatefulWidget {
 class _State extends State<StudentHome> {
   FlutterLocalNotificationsPlugin fltrNotification;
 
-  _showNotification(id,date) async{
+  _showNotification(id, date) async {
     var parsedDate = DateTime.parse(date);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
     print(today);
     // print(parsedDate);
-    var androidDetails = new AndroidNotificationDetails(
-        "Class", "Student Notification", "This channel is for student notification",
+    var androidDetails = new AndroidNotificationDetails("Class",
+        "Student Notification", "This channel is for student notification",
         importance: Importance.Max);
     var IOSDetails = new IOSNotificationDetails();
-    var generalNotificationDetails = new NotificationDetails(androidDetails, IOSDetails);
+    var generalNotificationDetails =
+        new NotificationDetails(androidDetails, IOSDetails);
 
 //    await fltrNotification.show(
 //        0, "Class Notification", "You have class today  ",
 //        generalNotificationDetails, payload: "Task");
- 
-    if(DateTime.now().subtract(const Duration(seconds: 900)).isAfter(parsedDate)) return null;
-    
-    
+
+    if (DateTime.now()
+        .subtract(const Duration(seconds: 900))
+        .isAfter(parsedDate)) return null;
+
     var scheduledTime = parsedDate;
     scheduledTime = scheduledTime.subtract(const Duration(seconds: 900));
     print(scheduledTime);
-    fltrNotification.schedule(id, "Class Notification", 'Your class is starting in 15 mins', scheduledTime, generalNotificationDetails);
+    fltrNotification.schedule(
+        id,
+        "Class Notification",
+        'Your class is starting in 15 mins',
+        scheduledTime,
+        generalNotificationDetails);
   }
 
+  Future<void> setupNotifications() async {
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
 
- Future<void> setupNotifications()async{
+    Response response = await get(
+      'http://10.0.2.2:8000/auth/session-approved/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
 
+    List data = jsonDecode(response.body);
 
-   final pref = await SharedPreferences.getInstance();
-   final token = pref.getString('token');
+    print('Running Init');
 
-   Response response = await get(
-     'http://10.0.2.2:8000/auth/session-approved/',
-     headers: <String, String>{
-       'Content-Type': 'application/json; charset=UTF-8',
-       'Authorization':"Bearer $token"
-     },
-   );
-
-   List data = jsonDecode(response.body);
-
-   print('Running Init');
-
-   data.forEach((element) {
-     print(element['session_date']);
-     _showNotification(element['id'],element['session_date']);
-
-   });
-   
+    data.forEach((element) {
+      print(element['session_date']);
+      _showNotification(element['id'], element['session_date']);
+    });
   }
 
+  void getjwt() async {
+    final pref = await SharedPreferences.getInstance();
+
+    final token = pref.getString('token');
+
+    Map<String, dynamic> payload = Jwt.parseJwt(token);
+
+    print(payload);
+  }
 
   @override
   void initState() {
-
+    getjwt();
     super.initState();
     //Notification Initalization
     var androidInitilize = new AndroidInitializationSettings('app_icon');
     var iOSinitilize = new IOSInitializationSettings();
-    var initilizationsSettings = new InitializationSettings(androidInitilize, iOSinitilize);
+    var initilizationsSettings =
+        new InitializationSettings(androidInitilize, iOSinitilize);
     fltrNotification = new FlutterLocalNotificationsPlugin();
-    fltrNotification.initialize(initilizationsSettings, onSelectNotification: notificationSelected);
+    fltrNotification.initialize(initilizationsSettings,
+        onSelectNotification: notificationSelected);
     setupNotifications();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -219,9 +235,7 @@ class _State extends State<StudentHome> {
                             timeInSecForIos: 1,
                             backgroundColor: Colors.pink,
                             textColor: Colors.white,
-                            fontSize: 16.0
-                        );
-
+                            fontSize: 16.0);
 
                         Navigator.pushReplacementNamed(context, '/');
                       },
@@ -229,10 +243,8 @@ class _State extends State<StudentHome> {
               ],
             )));
   }
-  Future notificationSelected(String payload) async{
-        //After notification is pressed.
-        
-        
-      
+
+  Future notificationSelected(String payload) async {
+    //After notification is pressed.
   }
 }
