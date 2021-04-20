@@ -7,10 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
-<<<<<<< Updated upstream
 import 'package:jwt_decode/jwt_decode.dart';
-=======
->>>>>>> Stashed changes
 
 class StudentHome extends StatefulWidget {
   @override
@@ -64,7 +61,6 @@ class _State extends State<StudentHome> {
         'Authorization': "Bearer $token"
       },
     );
-<<<<<<< Updated upstream
 
     List data = jsonDecode(response.body);
 
@@ -84,25 +80,11 @@ class _State extends State<StudentHome> {
     Map<String, dynamic> payload = Jwt.parseJwt(token);
 
     print(payload);
-=======
-
-    List data = jsonDecode(response.body);
-
-    print('Running Init');
-
-    data.forEach((element) {
-      print(element['session_date']);
-      _showNotification(element['id'], element['session_date']);
-    });
->>>>>>> Stashed changes
   }
 
   @override
   void initState() {
-<<<<<<< Updated upstream
     getjwt();
-=======
->>>>>>> Stashed changes
     super.initState();
     //Notification Initalization
     var androidInitilize = new AndroidInitializationSettings('app_icon');

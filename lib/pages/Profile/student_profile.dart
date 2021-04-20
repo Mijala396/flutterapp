@@ -77,21 +77,10 @@ class _StudentProfileState extends State<StudentProfile> {
                   radius: 40.0,
                 ),
               ),
-<<<<<<< Updated upstream
-              Divider(
-                height: 90,
-                color: Colors.white,
-              ),
-              Text(
-                'Name',
-                style: TextStyle(
-                  color: Colors.grey,
-=======
               Text(
                 'Name',
                 style: TextStyle(
                   color: Colors.grey[800],
->>>>>>> Stashed changes
                   letterSpacing: 2.0,
                 ),
               ),
@@ -101,11 +90,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$firstName $lastName',
                 style: TextStyle(
-<<<<<<< Updated upstream
-                  color: Colors.grey,
-=======
                   color: Colors.grey[800],
->>>>>>> Stashed changes
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
@@ -117,11 +102,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 'Current Level',
                 style: TextStyle(
-<<<<<<< Updated upstream
-                  color: Colors.grey,
-=======
                   color: Colors.grey[800],
->>>>>>> Stashed changes
                   letterSpacing: 2.0,
                 ),
               ),
@@ -131,11 +112,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$level',
                 style: TextStyle(
-<<<<<<< Updated upstream
-                  color: Colors.grey,
-=======
                   color: Colors.grey[800],
->>>>>>> Stashed changes
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
