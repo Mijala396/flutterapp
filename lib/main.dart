@@ -17,6 +17,7 @@ import 'package:flutter_application_1/pages/TutorDetails/tutor_details.dart';
 import 'package:flutter_application_1/pages/TutorList/tutor_list.dart';
 import 'package:flutter_application_1/pages/TutorRating/tutor_ratings.dart';
 import 'package:flutter_application_1/pages/RequestClass/view_class.dart';
+import 'package:flutter_application_1/pages/student_class_history/student_classHistory.dart';
 
 void main() {
   runApp(MyApp());
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
         '/StudentHome': (context) => StudentHome(),
         '/StudentNotification': (context) => StudentNotification(),
         '/studentBill': (context) => studentBill(),
+        '/studentclasshistory': (context) => studentClassHistory(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Application',
