@@ -225,6 +225,34 @@ class _State extends State<StudentHome> {
                         ),
                       ),
                       onPressed: () async {
+                        AlertDialog(
+                          title: Text("Logout Confirmation"),
+                          content: Text("Are you sure you want to logout?"),
+                          actions: [
+                            FlatButton(
+                                onPressed: () async {
+                                  final pref =
+                                      await SharedPreferences.getInstance();
+                                  await pref.setString('token', '');
+
+                                  Fluttertoast.showToast(
+                                      msg: "Sucessfully Logged Out ",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.pink,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+
+                                  Navigator.pushReplacementNamed(context, '/');
+                                },
+                                child: Text("Yes")),
+                            FlatButton(onPressed: null, child: Text("No"))
+                          ],
+                          elevation: 24.0,
+                          shape: CircleBorder(),
+                          backgroundColor: Colors.pink,
+                        );
                         final pref = await SharedPreferences.getInstance();
                         await pref.setString('token', '');
 

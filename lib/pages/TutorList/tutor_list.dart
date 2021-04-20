@@ -46,7 +46,7 @@ class _TutorListState extends State<TutorList> {
         appBar: AppBar(
           title: Text('Tutor List'),
           centerTitle: true,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.pink,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -74,19 +74,13 @@ class _TutorListState extends State<TutorList> {
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.grey[800]),
                                 ),
-
-                                // FlatButton.icon(
-                                //     onPressed:(){
-
-                                //       getTutorRating(item['tutor']);
-
-                                //     },
-                                //     label: Text('Tutor Ratings'),
-                                //     icon: Icon(
-                                //         Icons.star,
-                                //         color:Colors.yellowAccent
-                                //     )
-                                // ),
+                                FlatButton.icon(
+                                    onPressed: () {
+                                      getTutorRating(item['tutor']);
+                                    },
+                                    label: Text('Tutor Ratings'),
+                                    icon: Icon(Icons.star,
+                                        color: Colors.yellowAccent)),
                                 SizedBox(
                                   height: 8.0,
                                 ),

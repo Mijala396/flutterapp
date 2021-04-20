@@ -62,8 +62,8 @@ class _StudentProfileState extends State<StudentProfile> {
           onPressed: () {
             Navigator.pushNamed(context, '/edit');
           },
-          child: Text('Edit'),
-          backgroundColor: Colors.lightBlue,
+          child: const Icon(Icons.edit),
+          backgroundColor: Colors.pink,
         ),
         body: Padding(
           padding: EdgeInsets.all(30.0),
@@ -77,14 +77,10 @@ class _StudentProfileState extends State<StudentProfile> {
                   radius: 40.0,
                 ),
               ),
-              Divider(
-                height: 90,
-                color: Colors.white,
-              ),
               Text(
                 'Name',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.grey[800],
                   letterSpacing: 2.0,
                 ),
               ),
@@ -94,7 +90,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$firstName $lastName',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.grey[800],
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
@@ -106,7 +102,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 'Current Level',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.grey[800],
                   letterSpacing: 2.0,
                 ),
               ),
@@ -116,7 +112,7 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$level',
                 style: TextStyle(
-                  color: Colors.grey,
+                  color: Colors.grey[800],
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,

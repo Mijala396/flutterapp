@@ -42,7 +42,7 @@ class _StudentClassState extends State<StudentClass> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: Colors.white,
         appBar: AppBar(
           title: Text('session'),
           centerTitle: true,
@@ -120,7 +120,7 @@ class _StudentClassState extends State<StudentClass> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    FlatButton.icon(
+                                    RaisedButton.icon(
                                         onPressed: () {
                                           Navigator.pushNamed(
                                               context, '/studentBill',

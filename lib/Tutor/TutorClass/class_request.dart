@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TutorClassRequest extends StatefulWidget {
   @override
@@ -65,6 +66,19 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
     totalcost = duration * day * charge;
   }
 
+  Future<void> deletestatus(id) async {
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
+
+    final Response response = await delete(
+      'http://10.0.2.2:8000/auth/deleteSessionRequest/$id/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+  }
+
   @override
   void initState() {
     getSessionsRequest(); //page load hunu agadi data leyera dekhauna.
@@ -78,7 +92,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
         appBar: AppBar(
           title: Text('session requests'),
           centerTitle: true,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.pink,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -159,9 +173,39 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                               item["session_days"],
                                               item["tutor_chargePerHour"]);
                                           updateStatus(item["id"]);
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Session accepted successfully",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIos: 1,
+                                              backgroundColor: Colors.pink,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+
+                                          Navigator.pushReplacementNamed(
+                                              context, '/tutorClassRequest');
                                         },
                                         label: Text('Accept request'),
                                         icon: Icon(Icons.info)),
+                                    FlatButton.icon(
+                                        onPressed: () {
+                                          deletestatus(item['id']);
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Request cancelled successfully",
+                                              toastLength: Toast.LENGTH_SHORT,
+                                              gravity: ToastGravity.BOTTOM,
+                                              timeInSecForIos: 1,
+                                              backgroundColor: Colors.pink,
+                                              textColor: Colors.white,
+                                              fontSize: 16.0);
+
+                                          Navigator.pushReplacementNamed(
+                                              context, '/tutorClassRequest');
+                                        },
+                                        label: Text('Delete request'),
+                                        icon: Icon(Icons.delete)),
                                   ],
                                 )
                               ],
