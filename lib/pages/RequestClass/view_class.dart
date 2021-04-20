@@ -46,7 +46,7 @@ class _StudentClassState extends State<StudentClass> {
         appBar: AppBar(
           title: Text('session'),
           centerTitle: true,
-          backgroundColor: Colors.redAccent,
+          backgroundColor: Colors.pink,
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -122,9 +122,24 @@ class _StudentClassState extends State<StudentClass> {
                                   children: <Widget>[
                                     FlatButton.icon(
                                         onPressed: () {
+                                          Navigator.pushNamed(
+                                              context, '/studentBill',
+                                              arguments: {
+                                                'id': item['id'],
+                                                'student_name':
+                                                    item['student_name'],
+                                                'student_lastname':
+                                                    item['student_lastname'],
+                                                'tutor_name':
+                                                    item['tutor_name'],
+                                                'tutor_lastname':
+                                                    item['tutor_lastname'],
+                                                'tutor_chargePerHour':
+                                                    item['tutor_chargePerHour'],
+                                              });
                                           //getAcceptrequest(item['data']);
                                         },
-                                        label: Text('Accept request'),
+                                        label: Text('generate bill'),
                                         icon: Icon(Icons.info)),
                                   ],
                                 )
