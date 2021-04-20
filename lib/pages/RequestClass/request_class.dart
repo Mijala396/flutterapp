@@ -6,6 +6,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import 'package:flutter/services.dart';
+
 class RequestClass extends StatefulWidget {
   @override
   _RequestClassState createState() => _RequestClassState();
@@ -47,17 +49,20 @@ class _RequestClassState extends State<RequestClass> {
         timeInSecForIos: 1,
         backgroundColor: Colors.pink,
         textColor: Colors.white,
-        fontSize: 16.0
-    );
+        fontSize: 16.0);
 
     Navigator.pushReplacementNamed(context, '/StudentHome');
   }
 
   Widget buildsessionDurationField() {
     return TextFormField(
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter Session Duration',
+        labelText: 'Enter Session Duration(hour per day)',
       ),
       validator: (String value) {
         if (value.isEmpty) {
@@ -75,6 +80,10 @@ class _RequestClassState extends State<RequestClass> {
 
   Widget buildsessionDayField() {
     return TextFormField(
+      keyboardType: TextInputType.number,
+      inputFormatters: <TextInputFormatter>[
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+      ],
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Enter Session days',
@@ -100,7 +109,7 @@ class _RequestClassState extends State<RequestClass> {
       appBar: AppBar(
         title: Text('Class Request'),
         centerTitle: true,
-        backgroundColor: Colors.redAccent,
+        backgroundColor: Colors.pink,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -114,14 +123,14 @@ class _RequestClassState extends State<RequestClass> {
                     RaisedButton(
                       child: Text('Start Date'),
                       onPressed: () {
-                        DatePicker.showDateTimePicker(context, showTitleActions: true, onChanged: (date) {
-                        }, onConfirm: (date) {
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            onChanged: (date) {}, onConfirm: (date) {
                           _startDateTime = date;
                           print('Current $date');
                         }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                     ),
-
                     SizedBox(
                       width: 10,
                     ),
@@ -167,7 +176,8 @@ class _RequestClassState extends State<RequestClass> {
               buildsessionDayField(),
               TextField(
                 maxLines: 4,
-                decoration: InputDecoration(labelText: 'Send a message'),
+                decoration:
+                    InputDecoration(labelText: 'Send a message(optional)'),
                 onChanged: (text) {
                   message = text;
                   print(text);

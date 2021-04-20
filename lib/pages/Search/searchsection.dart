@@ -9,7 +9,7 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   String _value = 'Maths';
-  String value1 = "highschool";
+  String value1 = "Primary-level(1-5)";
   String values;
 
   Future<void> getTutors() async {
@@ -20,7 +20,9 @@ class _SearchState extends State<Search> {
       // Decoding Json data.
       List data = jsonDecode(response.body);
 
-      List filteredDate = data.where((element) => element['tutor_academic_level']==value1).toList();
+      List filteredDate = data
+          .where((element) => element['tutor_academic_level'] == value1)
+          .toList();
 
       print('-----Filtered Date');
       print(filteredDate);
@@ -132,51 +134,42 @@ class _SearchState extends State<Search> {
                         items: [
                           DropdownMenuItem(
                             child: Text(
-                              " Primary",
+                              "Primary-level(1-5)",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 20,
                               ),
                             ),
-                            value: 'primary',
+                            value: 'Primary-level(1-5)',
                           ),
                           DropdownMenuItem(
                             child: Text(
-                              "secondary",
+                              "Lower-secondary-level(6-8)",
                               style: TextStyle(
                                 color: Colors.grey,
                                 fontSize: 20,
                               ),
                             ),
-                            value: 'secondary',
+                            value: 'Lower-secondary-level(6-8)',
                           ),
                           DropdownMenuItem(
                               child: Text(
-                                "Middleschool",
+                                "Secondary-level(9-10)",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 20,
                                 ),
                               ),
-                              value: 'middleschool'),
+                              value: 'Secondary-level(9-10)'),
                           DropdownMenuItem(
                               child: Text(
-                                "highschool",
+                                "High_School(11-12)",
                                 style: TextStyle(
                                   color: Colors.grey,
                                   fontSize: 20,
                                 ),
                               ),
-                              value: 'highschool'),
-                          DropdownMenuItem(
-                              child: Text(
-                                "Bachelors",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              value: 'Bachelors')
+                              value: 'High_School(11-12)')
                         ],
                         onChanged: (value) {
                           setState(() {

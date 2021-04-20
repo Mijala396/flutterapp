@@ -7,7 +7,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+<<<<<<< Updated upstream
 import 'package:jwt_decode/jwt_decode.dart';
+=======
+>>>>>>> Stashed changes
 
 class StudentHome extends StatefulWidget {
   @override
@@ -61,6 +64,7 @@ class _State extends State<StudentHome> {
         'Authorization': "Bearer $token"
       },
     );
+<<<<<<< Updated upstream
 
     List data = jsonDecode(response.body);
 
@@ -80,11 +84,25 @@ class _State extends State<StudentHome> {
     Map<String, dynamic> payload = Jwt.parseJwt(token);
 
     print(payload);
+=======
+
+    List data = jsonDecode(response.body);
+
+    print('Running Init');
+
+    data.forEach((element) {
+      print(element['session_date']);
+      _showNotification(element['id'], element['session_date']);
+    });
+>>>>>>> Stashed changes
   }
 
   @override
   void initState() {
+<<<<<<< Updated upstream
     getjwt();
+=======
+>>>>>>> Stashed changes
     super.initState();
     //Notification Initalization
     var androidInitilize = new AndroidInitializationSettings('app_icon');
@@ -225,6 +243,34 @@ class _State extends State<StudentHome> {
                         ),
                       ),
                       onPressed: () async {
+                        AlertDialog(
+                          title: Text("Logout Confirmation"),
+                          content: Text("Are you sure you want to logout?"),
+                          actions: [
+                            FlatButton(
+                                onPressed: () async {
+                                  final pref =
+                                      await SharedPreferences.getInstance();
+                                  await pref.setString('token', '');
+
+                                  Fluttertoast.showToast(
+                                      msg: "Sucessfully Logged Out ",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIos: 1,
+                                      backgroundColor: Colors.pink,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+
+                                  Navigator.pushReplacementNamed(context, '/');
+                                },
+                                child: Text("Yes")),
+                            FlatButton(onPressed: null, child: Text("No"))
+                          ],
+                          elevation: 24.0,
+                          shape: CircleBorder(),
+                          backgroundColor: Colors.pink,
+                        );
                         final pref = await SharedPreferences.getInstance();
                         await pref.setString('token', '');
 

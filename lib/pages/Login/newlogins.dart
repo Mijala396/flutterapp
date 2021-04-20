@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 class Formscreen extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -55,13 +56,11 @@ class Formscreenstate extends State<Formscreen> {
               timeInSecForIos: 1,
               backgroundColor: Colors.pink,
               textColor: Colors.white,
-              fontSize: 16.0
-          );
-        return Navigator.pushReplacement(
+              fontSize: 16.0);
+          return Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => StudentHome()),
           );
-
         }
       }
 
@@ -79,15 +78,21 @@ class Formscreenstate extends State<Formscreen> {
 
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Widget buildNameField() {
+  Widget buildemailField() {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter username',
+        labelText: 'Enter email',
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the username';
+          return 'please enter the email';
+        }
+
+        if (!RegExp(
+                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            .hasMatch(value)) {
+          return 'please enter valid email';
         }
       },
       onSaved: (String value) {
@@ -163,7 +168,7 @@ class Formscreenstate extends State<Formscreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      buildNameField(),
+                      buildemailField(),
                       SizedBox(height: 15),
                       buildPasswordField(),
                       SizedBox(height: 5),

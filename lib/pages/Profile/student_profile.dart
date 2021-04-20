@@ -62,8 +62,8 @@ class _StudentProfileState extends State<StudentProfile> {
           onPressed: () {
             Navigator.pushNamed(context, '/edit');
           },
-          child: Text('Edit'),
-          backgroundColor: Colors.lightBlue,
+          child: const Icon(Icons.edit),
+          backgroundColor: Colors.pink,
         ),
         body: Padding(
           padding: EdgeInsets.all(30.0),
@@ -77,6 +77,7 @@ class _StudentProfileState extends State<StudentProfile> {
                   radius: 40.0,
                 ),
               ),
+<<<<<<< Updated upstream
               Divider(
                 height: 90,
                 color: Colors.white,
@@ -85,6 +86,12 @@ class _StudentProfileState extends State<StudentProfile> {
                 'Name',
                 style: TextStyle(
                   color: Colors.grey,
+=======
+              Text(
+                'Name',
+                style: TextStyle(
+                  color: Colors.grey[800],
+>>>>>>> Stashed changes
                   letterSpacing: 2.0,
                 ),
               ),
@@ -94,7 +101,11 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$firstName $lastName',
                 style: TextStyle(
+<<<<<<< Updated upstream
                   color: Colors.grey,
+=======
+                  color: Colors.grey[800],
+>>>>>>> Stashed changes
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
@@ -106,7 +117,11 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 'Current Level',
                 style: TextStyle(
+<<<<<<< Updated upstream
                   color: Colors.grey,
+=======
+                  color: Colors.grey[800],
+>>>>>>> Stashed changes
                   letterSpacing: 2.0,
                 ),
               ),
@@ -116,7 +131,11 @@ class _StudentProfileState extends State<StudentProfile> {
               Text(
                 '$level',
                 style: TextStyle(
+<<<<<<< Updated upstream
                   color: Colors.grey,
+=======
+                  color: Colors.grey[800],
+>>>>>>> Stashed changes
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 2.0,
