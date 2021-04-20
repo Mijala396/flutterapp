@@ -187,6 +187,7 @@ class _State extends State<StudentHome> {
                         ),
                       ),
                       onPressed: () {
+                        Navigator.pushNamed(context, '/studentclasshistory');
                         //signup screen
                       },
                     )),

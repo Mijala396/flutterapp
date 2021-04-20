@@ -16,8 +16,8 @@ class RequestClass extends StatefulWidget {
 class _RequestClassState extends State<RequestClass> {
   Map data = {};
   DateTime _startDateTime;
-  TimeOfDay _time;
-  String message;
+  DateTime _endDateTime;
+  String message = " ";
   String _sessionDuration;
   String _sessiondays;
 
@@ -37,7 +37,7 @@ class _RequestClassState extends State<RequestClass> {
               "subject": data['subject_name'],
               "tutor": data['id'],
               "session_date": dateString,
-              "session_time": _time.toString(),
+              "session_enddate": _endDateTime.toString(),
               "session_duration": _sessionDuration,
               "session_days": _sessiondays,
               "message": message
@@ -126,7 +126,10 @@ class _RequestClassState extends State<RequestClass> {
                         DatePicker.showDateTimePicker(context,
                             showTitleActions: true,
                             onChanged: (date) {}, onConfirm: (date) {
-                          _startDateTime = date;
+                          setState(() {
+                            _startDateTime = date;
+                          });
+
                           print('Current $date');
                         }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
@@ -145,24 +148,25 @@ class _RequestClassState extends State<RequestClass> {
                 child: Row(
                   children: <Widget>[
                     RaisedButton(
-                      child: Text('Start Time'),
+                      child: Text('End Date'),
                       onPressed: () {
-                        showTimePicker(
-                          context: context,
-                          initialTime: TimeOfDay.now(),
-                        ).then((date) {
+                        DatePicker.showDateTimePicker(context,
+                            showTitleActions: true,
+                            onChanged: (date) {}, onConfirm: (date) {
                           setState(() {
-                            _time = date;
+                            _endDateTime = date;
                           });
-                        });
+
+                          print('Current $date');
+                        }, currentTime: DateTime.now(), locale: LocaleType.en);
                       },
                     ),
                     SizedBox(
                       width: 10,
                     ),
-                    Text(_time == null
-                        ? 'Not picked a start time yet'
-                        : _time.toString()),
+                    Text(_endDateTime == null
+                        ? 'Not picked an end date yet'
+                        : _endDateTime.toString()),
                   ],
                 ),
               ),
@@ -199,6 +203,16 @@ class _RequestClassState extends State<RequestClass> {
                 ),
                 onPressed: () {
                   sendRequest();
+                  Fluttertoast.showToast(
+                      msg: "Request sent successfully!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIos: 1,
+                      backgroundColor: Colors.pink,
+                      textColor: Colors.white,
+                      fontSize: 16.0);
+
+                  Navigator.pushReplacementNamed(context, '/StudentHome');
                 },
               ),
             ],

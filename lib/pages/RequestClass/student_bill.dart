@@ -3,6 +3,7 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:flutter_khalti/flutter_khalti.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class studentBill extends StatefulWidget {
   @override
@@ -32,9 +33,29 @@ class _studentBillState extends State<studentBill> {
       onSuccess: (data) {
         print("here");
         updateBillStatus();
+        Fluttertoast.showToast(
+            msg: "Payment Successful",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.pink,
+            textColor: Colors.white,
+            fontSize: 16.0);
+
+        Navigator.pushReplacementNamed(context, '/studentclassview');
       },
       onFaliure: (error) {
         print("sorry");
+        Fluttertoast.showToast(
+            msg: "Payment Error! Please try again.",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIos: 1,
+            backgroundColor: Colors.pink,
+            textColor: Colors.white,
+            fontSize: 16.0);
+
+        Navigator.pushReplacementNamed(context, '/studentclassview');
       },
     );
   }
@@ -86,7 +107,7 @@ class _studentBillState extends State<studentBill> {
     data = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
-          title: Text('session bill'),
+          title: Text('student bill'),
           centerTitle: true,
           backgroundColor: Colors.pink,
         ),
@@ -137,14 +158,18 @@ class _studentBillState extends State<studentBill> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          FlatButton.icon(
-                              onPressed: () {
-                                _payViaKhalti();
-                              },
-                              label: Text('pay bill'),
-                              icon: Icon(Icons.monetization_on)),
+                          Container(
+                            child: billdata['is_paid']
+                                ? Text('bill is paid')
+                                : FlatButton.icon(
+                                    onPressed: () {
+                                      _payViaKhalti();
+                                    },
+                                    label: Text('pay bill'),
+                                    icon: Icon(Icons.monetization_on)),
+                          ),
                         ],
-                      )
+                      ),
                     ],
                   ),
                 ),
