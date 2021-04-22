@@ -3,16 +3,20 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-class TutorClass extends StatefulWidget {
+class tutorClassHistory extends StatefulWidget {
   @override
-  _TutorClassState createState() => _TutorClassState();
+  _tutorClassHistoryState createState() => _tutorClassHistoryState();
 }
 
-class _TutorClassState extends State<TutorClass> {
+class _tutorClassHistoryState extends State<tutorClassHistory> {
   List sessions = [];
-  Future<void> getTutorSessions() async {
+  List data = [];
+  List finaldata = [];
+  Future<void> gettutorSessions() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
+
+    DateTime today = DateTime.now();
 
     final Response response = await get(
       'http://10.0.2.2:8000/auth/session-approve/',
@@ -21,33 +25,41 @@ class _TutorClassState extends State<TutorClass> {
         'Authorization': "Bearer $token"
       },
     );
-
-    List data = jsonDecode(response.body);
+    try {
+      data = jsonDecode(response.body);
+    } catch (e) {
+      print(e);
+    }
     setState(() {
       sessions = data;
+      finaldata = data
+          .where((element) =>
+              today.isAfter(DateTime.parse(element['session_enddate'])))
+          .toList();
     });
+
+    print(finaldata);
     print(sessions);
   }
 
   @override
   void initState() {
-    getTutorSessions();
+    gettutorSessions();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Colors.grey[200],
         appBar: AppBar(
-          title: Text('session'),
+          title: Text('class history'),
           centerTitle: true,
           backgroundColor: Colors.pink,
         ),
         body: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: sessions
+            children: finaldata
                 .map<Widget>((item) => Column(
                       children: <Widget>[
                         Card(
@@ -106,7 +118,7 @@ class _TutorClassState extends State<TutorClass> {
                                   height: 8.0,
                                 ),
                                 Text(
-                                  'duration in hour: ${item['session_duration']} ',
+                                  'duration in hours : ${item['session_duration']} ',
                                   style: TextStyle(
                                       fontSize: 18.0, color: Colors.grey[800]),
                                 ),
@@ -121,17 +133,32 @@ class _TutorClassState extends State<TutorClass> {
                                 SizedBox(
                                   height: 8.0,
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    FlatButton.icon(
-                                        onPressed: () {
-                                          //getAcceptrequest(item['data']);
-                                        },
-                                        label: Text('Accept request'),
-                                        icon: Icon(Icons.info)),
-                                  ],
-                                )
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.center,
+                                //   children: <Widget>[
+                                //     RaisedButton.icon(
+                                //         onPressed: () {
+                                //           Navigator.pushNamed(
+                                //               context, '/studentBill',
+                                //               arguments: {
+                                //                 'id': item['id'],
+                                //                 'student_name':
+                                //                     item['student_name'],
+                                //                 'student_lastname':
+                                //                     item['student_lastname'],
+                                //                 'tutor_name':
+                                //                     item['tutor_name'],
+                                //                 'tutor_lastname':
+                                //                     item['tutor_lastname'],
+                                //                 'tutor_chargePerHour':
+                                //                     item['tutor_chargePerHour'],
+                                //               });
+                                //           //getAcceptrequest(item['data']);
+                                //         },
+                                //         label: Text('Rate Tutor'),
+                                //         icon: Icon(Icons.rate_review)),
+                                //   ],
+                                // )
                               ],
                             ),
                           ),

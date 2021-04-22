@@ -94,7 +94,7 @@ class _StudentClassState extends State<StudentClass> {
                                   height: 8.0,
                                 ),
                                 Text(
-                                  'session_time : ${item['session_time']}',
+                                  'session_enddate : ${item['session_enddate']}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.grey[800]),
                                 ),

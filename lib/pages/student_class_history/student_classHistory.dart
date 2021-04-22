@@ -131,19 +131,9 @@ class _studentClassHistoryState extends State<studentClassHistory> {
                                     RaisedButton.icon(
                                         onPressed: () {
                                           Navigator.pushNamed(
-                                              context, '/studentBill',
+                                              context, '/tutorrating',
                                               arguments: {
-                                                'id': item['id'],
-                                                'student_name':
-                                                    item['student_name'],
-                                                'student_lastname':
-                                                    item['student_lastname'],
-                                                'tutor_name':
-                                                    item['tutor_name'],
-                                                'tutor_lastname':
-                                                    item['tutor_lastname'],
-                                                'tutor_chargePerHour':
-                                                    item['tutor_chargePerHour'],
+                                                'id': item['tutor'],
                                               });
                                           //getAcceptrequest(item['data']);
                                         },

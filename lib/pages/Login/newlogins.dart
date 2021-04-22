@@ -103,6 +103,7 @@ class Formscreenstate extends State<Formscreen> {
 
   Widget buildPasswordField() {
     return TextFormField(
+      obscureText: true,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Enter password',
@@ -177,7 +178,7 @@ class Formscreenstate extends State<Formscreen> {
                           if (invalidCred) ...[
                             SizedBox(height: 5),
                             Text(
-                              'Invalid Credentails',
+                              'Invalid Credentials',
                               style: TextStyle(
                                 color: Colors.redAccent,
                                 fontSize: 16,
@@ -186,6 +187,27 @@ class Formscreenstate extends State<Formscreen> {
                           ]
                         ],
                       ),
+                      Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: FlatButton(
+                            textColor: Colors.pink,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            color: Colors.white,
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pushReplacementNamed(
+                                  context, '/forgotpassword');
+                            },
+                          )),
+                      SizedBox(height: 5),
                       Container(
                           alignment: Alignment.center,
                           margin: EdgeInsets.fromLTRB(0, 10, 0, 0),

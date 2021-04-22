@@ -29,7 +29,7 @@ class _TutorListState extends State<TutorList> {
   }
 
   // GET THE INFO ABOUT THE TUTOR
-  Future<void> getTutorDetails(id) async {
+  Future<void> getTutorDetail(id) async {
     Response response =
         await get('http://10.0.2.2:8000/auth/tutor-details/$id/');
     Map Tutor = jsonDecode(response.body);
@@ -89,7 +89,7 @@ class _TutorListState extends State<TutorList> {
                                   children: <Widget>[
                                     FlatButton.icon(
                                         onPressed: () {
-                                          getTutorDetails(item['tutor']);
+                                          getTutorDetail(item['tutor']);
                                         },
                                         label: Text('Tutor Details'),
                                         icon: Icon(Icons.info)),

@@ -13,31 +13,35 @@ class TutorHome extends StatefulWidget {
 class _State extends State<TutorHome> {
   FlutterLocalNotificationsPlugin fltrNotification;
 
-  _showNotification(id,date) async{
+  _showNotification(id, date) async {
     var parsedDate = DateTime.parse(date);
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
 
     print(today);
     // print(parsedDate);
-    var androidDetails = new AndroidNotificationDetails(
-        "Class", "Student Notification", "This channel is for student notification",
+    var androidDetails = new AndroidNotificationDetails("Class",
+        "Student Notification", "This channel is for student notification",
         importance: Importance.Max);
     var iSODetails = new IOSNotificationDetails();
-    var generalNotificationDetails = new NotificationDetails(androidDetails, iSODetails);
+    var generalNotificationDetails =
+        new NotificationDetails(androidDetails, iSODetails);
 
 //    await fltrNotification.show(
 //        0, "Class Notification", "You have class today  ",
 //        generalNotificationDetails, payload: "Task");
     print('This code is running');
-    if(DateTime.now().isAfter(parsedDate)) return null;
+    if (DateTime.now().isAfter(parsedDate)) return null;
     var scheduledTime = parsedDate;
-    fltrNotification.schedule(id, "Class Notification", 'Your class is starting soon', scheduledTime, generalNotificationDetails);
+    fltrNotification.schedule(
+        id,
+        "Class Notification",
+        'Your class is starting soon',
+        scheduledTime,
+        generalNotificationDetails);
   }
 
-  Future<void> setupNotifications()async{
-
-
+  Future<void> setupNotifications() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
 
@@ -45,7 +49,7 @@ class _State extends State<TutorHome> {
       'http://10.0.2.2:8000/auth/session-approve/',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization':"Bearer $token"
+        'Authorization': "Bearer $token"
       },
     );
 
@@ -55,10 +59,8 @@ class _State extends State<TutorHome> {
 
     data.forEach((element) {
       print(element['session_date']);
-      _showNotification(element['id'],element['session_date']);
-
+      _showNotification(element['id'], element['session_date']);
     });
-
   }
 
   @override
@@ -68,9 +70,11 @@ class _State extends State<TutorHome> {
     super.initState();
     var androidInitilize = new AndroidInitializationSettings('app_icon');
     var iOSinitilize = new IOSInitializationSettings();
-    var initilizationsSettings = new InitializationSettings(androidInitilize, iOSinitilize);
+    var initilizationsSettings =
+        new InitializationSettings(androidInitilize, iOSinitilize);
     fltrNotification = new FlutterLocalNotificationsPlugin();
-    fltrNotification.initialize(initilizationsSettings, onSelectNotification: notificationSelected);
+    fltrNotification.initialize(initilizationsSettings,
+        onSelectNotification: notificationSelected);
     setupNotifications();
   }
 
@@ -159,6 +163,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
+                        Navigator.pushNamed(context, '/tutorclasshistory');
                         //signup screen
                       },
                     )),
@@ -205,7 +210,6 @@ class _State extends State<TutorHome> {
               ],
             )));
   }
-  Future notificationSelected(String payload) async{
 
-  }
+  Future notificationSelected(String payload) async {}
 }
