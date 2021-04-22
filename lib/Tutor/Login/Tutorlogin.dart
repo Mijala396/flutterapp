@@ -5,6 +5,7 @@ import 'package:flutter_application_1/Tutor/Home/homepage_tutor.dart';
 import 'package:http/http.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class Formscreentutor extends StatefulWidget {
   @override
@@ -46,6 +47,14 @@ class Formscreentutorstate extends State<Formscreentutor> {
         if (data['is_teacher']) {
           __storejwt();
           Navigator.pushReplacementNamed(context, '/tutorHome');
+          Fluttertoast.showToast(
+              msg: "Login is Sucessful",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIos: 1,
+              backgroundColor: Colors.pink,
+              textColor: Colors.white,
+              fontSize: 16.0);
         }
       }
 
@@ -67,11 +76,16 @@ class Formscreentutorstate extends State<Formscreentutor> {
     return TextFormField(
       decoration: InputDecoration(
         border: OutlineInputBorder(),
-        labelText: 'Enter username',
+        labelText: 'Enter email',
       ),
       validator: (String value) {
         if (value.isEmpty) {
-          return 'please enter the username';
+          return 'please enter the email';
+        }
+        if (!RegExp(
+                r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$')
+            .hasMatch(value)) {
+          return 'please enter valid email';
         }
       },
       onSaved: (String value) {
@@ -82,6 +96,7 @@ class Formscreentutorstate extends State<Formscreentutor> {
 
   Widget buildPasswordField() {
     return TextFormField(
+      obscureText: true,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         labelText: 'Enter password',
@@ -162,12 +177,30 @@ class Formscreentutorstate extends State<Formscreentutor> {
                       ),
                       Container(
                           alignment: Alignment.center,
+                          margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                          child: FlatButton(
+                            textColor: Colors.pink,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15)),
+                            color: Colors.white,
+                            child: Text(
+                              'Forgot Password?',
+                              style: TextStyle(
+                                fontSize: 20,
+                              ),
+                            ),
+                            onPressed: () {},
+                          )),
+                      SizedBox(height: 5),
+                      Container(
+                          alignment: Alignment.center,
                           margin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                           padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                           child: Text(
                             'login as:',
                             style: TextStyle(
-                                color: Colors.grey,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 15),
                           )),

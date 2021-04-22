@@ -18,6 +18,10 @@ import 'package:flutter_application_1/pages/TutorList/tutor_list.dart';
 import 'package:flutter_application_1/pages/TutorRating/tutor_ratings.dart';
 import 'package:flutter_application_1/pages/RequestClass/view_class.dart';
 import 'package:flutter_application_1/pages/student_class_history/student_classHistory.dart';
+import 'package:flutter_application_1/Tutor/tutor_class_history/tutor_classhistory.dart';
+import 'package:flutter_application_1/pages/student_class_history/rate_tutors.dart';
+import 'package:flutter_application_1/pages/forgetpw/forgetpw.dart';
+import 'package:flutter_application_1/pages/forgetpw/resetpw.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,6 +52,10 @@ class MyApp extends StatelessWidget {
         '/StudentNotification': (context) => StudentNotification(),
         '/studentBill': (context) => studentBill(),
         '/studentclasshistory': (context) => studentClassHistory(),
+        '/tutorclasshistory': (context) => tutorClassHistory(),
+        '/tutorrating': (context) => Rating(),
+        '/forgotpassword': (context) => ForgetPassword(),
+        '/resetPassword': (context) => ResetPassword(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Application',

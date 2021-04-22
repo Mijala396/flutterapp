@@ -108,7 +108,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: <Widget>[
                                 Text(
-                                  'Name : ${item['student_name']} ',
+                                  'StudentName : ${item['student_name']} ${item['student_lastname']}',
                                   style: TextStyle(
                                       fontSize: 18.0, color: Colors.grey[800]),
                                 ),
@@ -140,7 +140,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                   height: 8.0,
                                 ),
                                 Text(
-                                  'session_time : ${item['session_time']}',
+                                  'session_enddate : ${item['session_enddate']}',
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.grey[800]),
                                 ),
@@ -156,7 +156,15 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                   height: 8.0,
                                 ),
                                 Text(
-                                  'duration : ${item['session_duration']} ',
+                                  'duration in hours : ${item['session_duration']} ',
+                                  style: TextStyle(
+                                      fontSize: 18.0, color: Colors.grey[800]),
+                                ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Text(
+                                  'duration in days : ${item['session_days']} ',
                                   style: TextStyle(
                                       fontSize: 18.0, color: Colors.grey[800]),
                                 ),
