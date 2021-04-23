@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class TutorEdit extends StatefulWidget {
   @override
@@ -9,15 +10,16 @@ class TutorEdit extends StatefulWidget {
 }
 
 class _TutorEditState extends State<TutorEdit> {
-  String first_name;
-  String last_name;
+  String first_name='';
+  String last_name='';
   String username;
-  String email;
+  String email='';
   String password;
   String address;
-  String gender;
-  String contactno;
+  String gender='';
+  String contactno='';
   String academiclevel;
+  String chargePerHour='';
 
   @override
 
@@ -39,7 +41,9 @@ class _TutorEditState extends State<TutorEdit> {
       if(first_name.isNotEmpty)editableData['first_name']=first_name;
       if(last_name.isNotEmpty) editableData['last_name']=last_name;
       if(email.isNotEmpty) editableData['email']=email;
-
+      if(address.isNotEmpty) editableData['address']=address;
+      if(contactno.isNotEmpty)editableData['contactno']= contactno;
+      if(chargePerHour.isNotEmpty)editableData['chargePerHour']= chargePerHour;
       print(editableData);
       final pref = await SharedPreferences.getInstance();
       final token = pref.getString('token');
@@ -55,6 +59,14 @@ class _TutorEditState extends State<TutorEdit> {
 
       Map data = jsonDecode(response.body);
 
+      Fluttertoast.showToast(
+          msg: "Edit Sucessful",
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIos: 1,
+          backgroundColor: Colors.pink,
+          textColor: Colors.white,
+          fontSize: 16.0);
       Navigator.pushReplacementNamed(context, '/profile');
 
 
@@ -80,6 +92,18 @@ class _TutorEditState extends State<TutorEdit> {
       ),
       onSaved: (String value) {
         first_name = value;
+      },
+    );
+  }
+
+  Widget buildChargePerHourField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Edit charge per hour',
+      ),
+      onSaved: (String value) {
+        chargePerHour = value;
       },
     );
   }
@@ -205,19 +229,13 @@ class _TutorEditState extends State<TutorEdit> {
                       SizedBox(height: 10),
                       buildLastNameField(),
                       SizedBox(height: 10),
-                      buildUserNameField(),
-                      SizedBox(height: 10),
-                      buildPasswordField(),
-                      SizedBox(height: 10),
-                      buildemailField(),
-                      SizedBox(height: 10),
                       buildaddressField(),
                       SizedBox(height: 10),
                       buildgenderField(),
                       SizedBox(height: 10),
                       buildcontactField(),
                       SizedBox(height: 10),
-                      buildacademiclevelField(),
+                      buildChargePerHourField(),
                       SizedBox(height: 10),
                       RaisedButton(
                         textColor: Colors.white,

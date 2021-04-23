@@ -11,6 +11,29 @@ class StudentClass extends StatefulWidget {
 class _StudentClassState extends State<StudentClass> {
   List sessions = [];
   List data = [];
+  List fileData = [];
+  Future<void> getFiles(id) async{
+    final pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token');
+    final Response response = await get(
+      'http://10.0.2.2:8000/auth/getFile/$id/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+    try {
+      fileData = jsonDecode(response.body);
+      print(fileData);
+      Navigator.pushNamed(context, '/downloadFile',arguments: {
+        'data':fileData
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
   Future<void> getstudentSessions() async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
@@ -122,25 +145,32 @@ class _StudentClassState extends State<StudentClass> {
                                   children: <Widget>[
                                     RaisedButton.icon(
                                         onPressed: () {
+                                              getFiles(item['id']);
+                                        },
+                                        label: Text('View shared Files'),
+                                        icon: Icon(Icons.file_copy)),
+                                    RaisedButton.icon(
+                                        onPressed: () {
                                           Navigator.pushNamed(
                                               context, '/studentBill',
                                               arguments: {
                                                 'id': item['id'],
                                                 'student_name':
-                                                    item['student_name'],
+                                                item['student_name'],
                                                 'student_lastname':
-                                                    item['student_lastname'],
+                                                item['student_lastname'],
                                                 'tutor_name':
-                                                    item['tutor_name'],
+                                                item['tutor_name'],
                                                 'tutor_lastname':
-                                                    item['tutor_lastname'],
+                                                item['tutor_lastname'],
                                                 'tutor_chargePerHour':
-                                                    item['tutor_chargePerHour'],
+                                                item['tutor_chargePerHour'],
                                               });
                                           //getAcceptrequest(item['data']);
                                         },
                                         label: Text('generate bill'),
-                                        icon: Icon(Icons.info)),
+                                        icon: Icon(Icons.info))
+
                                   ],
                                 )
                               ],
