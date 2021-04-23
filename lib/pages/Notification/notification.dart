@@ -10,6 +10,7 @@ class StudentNotification extends StatefulWidget {
 
 class _StudentNotificationState extends State<StudentNotification> {
   List finalData = [];
+  List notificationdata;
 
   Future<void> getSessoionsforNotification() async {
     final pref = await SharedPreferences.getInstance();
@@ -24,6 +25,20 @@ class _StudentNotificationState extends State<StudentNotification> {
     );
 
     List data = jsonDecode(response.body);
+
+    Response notifyresponse = await get(
+      'http://10.0.2.2:8000/auth/notifications/',
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': "Bearer $token"
+      },
+    );
+
+    setState(() {
+      notificationdata = jsonDecode(notifyresponse.body);
+    });
+
+    print(notificationdata);
 
     final today = (DateTime.now().toString()).substring(0, 10);
     setState(() {
