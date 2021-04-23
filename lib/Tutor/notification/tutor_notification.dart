@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class StudentNotification extends StatefulWidget {
+class tutorNotification extends StatefulWidget {
   @override
-  _StudentNotificationState createState() => _StudentNotificationState();
+  _tutorNotificationState createState() => _tutorNotificationState();
 }
 
-class _StudentNotificationState extends State<StudentNotification> {
+class _tutorNotificationState extends State<tutorNotification> {
   List finalData = [];
   List notificationdata;
 
@@ -17,7 +17,7 @@ class _StudentNotificationState extends State<StudentNotification> {
     final token = pref.getString('token');
 
     Response response = await get(
-      'http://10.0.2.2:8000/auth/session-approved/',
+      'http://10.0.2.2:8000/auth/session-approve/',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': "Bearer $token"
@@ -71,25 +71,25 @@ class _StudentNotificationState extends State<StudentNotification> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: finalData
                     .map<Widget>((item) => Column(
+                  children: <Widget>[
+                    Card(
+                      margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            Card(
-                              margin: EdgeInsets.fromLTRB(16, 16, 16, 0),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                                  children: <Widget>[
-                                    Text(
-                                      'You have ${item['subject']} class today ${item['session_date']}',
-                                      style: TextStyle(
-                                          fontSize: 18.0, color: Colors.grey[800]),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
+                            Text(
+                              'You have ${item['subject']} class today ${item['session_date']}',
+                              style: TextStyle(
+                                  fontSize: 18.0, color: Colors.grey[800]),
+                            ),
                           ],
-                        ))
+                        ),
+                      ),
+                    )
+                  ],
+                ))
                     .toList(),
               ),
               Column(

@@ -36,7 +36,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
     print('-------Sessions------');
   }
 
-  Future<void> updateStatus(id) async {
+  Future<void> updateStatus(id,student) async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
 
@@ -60,15 +60,40 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
         "bill_date": "today"
       }),
     );
+
+    final Response response2 = await post(
+        'http://10.0.2.2:8000/auth/notifications/',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token"
+        }, body: jsonEncode(<String, dynamic>{
+      "notification": 'Your class request has been accepted',
+      "recepient": student,
+      "seession":id
+    })
+    );
+
   }
 
   void calculateCost(duration, day, charge) {
     totalcost = duration * day * charge;
   }
 
-  Future<void> deletestatus(id) async {
+  Future<void> deletestatus(id,student) async {
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
+
+    final Response response2 = await post(
+        'http://10.0.2.2:8000/auth/notifications/',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token"
+        }, body: jsonEncode(<String, dynamic>{
+      "notification": 'You have a new class request',
+      "recepient": student,
+    })
+    );
+
 
     final Response response = await delete(
       'http://10.0.2.2:8000/auth/deleteSessionRequest/$id/',
@@ -77,6 +102,13 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
         'Authorization': "Bearer $token"
       },
     );
+
+
+
+
+
+
+
   }
 
   @override
@@ -180,7 +212,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                               item["session_duration"],
                                               item["session_days"],
                                               item["tutor_chargePerHour"]);
-                                          updateStatus(item["id"]);
+                                          updateStatus(item["id"],item['student']);
                                           Fluttertoast.showToast(
                                               msg:
                                                   "Session accepted successfully",
@@ -198,7 +230,7 @@ class _TutorClassRequestState extends State<TutorClassRequest> {
                                         icon: Icon(Icons.info)),
                                     FlatButton.icon(
                                         onPressed: () {
-                                          deletestatus(item['id']);
+                                          deletestatus(item['id'],item['student']);
                                           Fluttertoast.showToast(
                                               msg:
                                                   "Request cancelled successfully",

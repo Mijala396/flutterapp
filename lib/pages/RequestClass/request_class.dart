@@ -17,13 +17,26 @@ class _RequestClassState extends State<RequestClass> {
   Map data = {};
   DateTime _startDateTime;
   DateTime _endDateTime;
-  String message = " ";
-  String _sessionDuration;
-  String _sessiondays;
+  String message = "";
+  String _sessionDuration='';
+  String _sessiondays='';
+
+  bool validate(){
+    if(_startDateTime.toString().isEmpty || _endDateTime.toString().isEmpty
+    || _sessionDuration.isEmpty || _sessiondays.isEmpty || message.isEmpty
+    ){
+      return false;
+    }
+      else{
+        return true;
+    }
+
+
+  }
+
 
   Future<void> sendRequest() async {
     String dateString = _startDateTime.toString();
-    print(dateString);
     final pref = await SharedPreferences.getInstance();
     final token = pref.getString('token');
 
@@ -42,6 +55,28 @@ class _RequestClassState extends State<RequestClass> {
               "session_days": _sessiondays,
               "message": message
             }));
+
+    Map sessionData = jsonDecode(response.body);
+
+
+    final Response response2 =
+    await post('http://10.0.2.2:8000/auth/notifications/',
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'Authorization': "Bearer $token"
+        },
+        body: jsonEncode(<String, dynamic>{
+          "notification": 'You have a new class request',
+          "recepient": data['id'],
+          "seession": sessionData['id'],
+        }));
+
+  print('--session-data---');
+    print(sessionData);
+    print('--session-data---');
+
+
+
     Fluttertoast.showToast(
         msg: "Sucessfully Sent a Request ",
         toastLength: Toast.LENGTH_SHORT,
@@ -105,6 +140,10 @@ class _RequestClassState extends State<RequestClass> {
   @override
   Widget build(BuildContext context) {
     data = ModalRoute.of(context).settings.arguments;
+    print('------data---');
+    print(data);
+    print('------data---');
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Class Request'),
@@ -202,17 +241,22 @@ class _RequestClassState extends State<RequestClass> {
                   ),
                 ),
                 onPressed: () {
-                  sendRequest();
-                  Fluttertoast.showToast(
-                      msg: "Request sent successfully!",
-                      toastLength: Toast.LENGTH_SHORT,
-                      gravity: ToastGravity.BOTTOM,
-                      timeInSecForIos: 1,
-                      backgroundColor: Colors.pink,
-                      textColor: Colors.white,
-                      fontSize: 16.0);
 
-                  Navigator.pushReplacementNamed(context, '/StudentHome');
+                  bool isValid = validate();
+                  if(!isValid){
+                    return  Fluttertoast.showToast(
+                        msg: "Please fill in all the data",
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIos: 1,
+                        backgroundColor: Colors.pink,
+                        textColor: Colors.white,
+                        fontSize: 16.0);
+                  }
+                  sendRequest();
+
+
+//                  Navigator.pushReplacementNamed(context, '/StudentHome');
                 },
               ),
             ],

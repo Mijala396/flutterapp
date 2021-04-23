@@ -126,9 +126,11 @@ class _TutorClassState extends State<TutorClass> {
                                   children: <Widget>[
                                     FlatButton.icon(
                                         onPressed: () {
-                                          //getAcceptrequest(item['data']);
+                                          Navigator.pushNamed(context, '/uploadFile', arguments: {
+                                            'data':item['id']
+                                          });
                                         },
-                                        label: Text('Accept request'),
+                                        label: Text('Sharefiles'),
                                         icon: Icon(Icons.info)),
                                   ],
                                 )

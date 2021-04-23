@@ -6,11 +6,14 @@ import 'package:flutter_application_1/Tutor/Profile/tutor_profile.dart';
 import 'package:flutter_application_1/Tutor/TutorClass/class_request.dart';
 import 'package:flutter_application_1/Tutor/TutorClass/tutor_class.dart';
 import 'package:flutter_application_1/Tutor/Home/homepage_tutor.dart';
+import 'package:flutter_application_1/Tutor/notification/tutor_notification.dart';
 import 'package:flutter_application_1/pages/Home/homepage_student.dart';
+import 'package:flutter_application_1/pages/Home/upload_file.dart';
 import 'package:flutter_application_1/pages/Notification/notification.dart';
 import 'package:flutter_application_1/pages/Profile/edit_student.dart';
 import 'package:flutter_application_1/pages/Login/newlogins.dart';
 import 'package:flutter_application_1/pages/Profile/student_profile.dart';
+import 'package:flutter_application_1/pages/RequestClass/download_file.dart';
 import 'package:flutter_application_1/pages/RequestClass/request_class.dart';
 import 'package:flutter_application_1/pages/RequestClass/student_bill.dart';
 import 'package:flutter_application_1/pages/TutorDetails/tutor_details.dart';
@@ -56,6 +59,9 @@ class MyApp extends StatelessWidget {
         '/tutorrating': (context) => Rating(),
         '/forgotpassword': (context) => ForgetPassword(),
         '/resetPassword': (context) => ResetPassword(),
+        '/tutorNotification':(context)=> tutorNotification(),
+        '/uploadFile':(context)=> uploadFile(),
+        '/downloadFile':(context)=> DownloadFiles(),
       },
       debugShowCheckedModeBanner: false,
       title: 'Flutter Application',

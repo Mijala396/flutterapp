@@ -10,18 +10,18 @@ class Formscreen2 extends StatefulWidget {
 }
 
 class Formscreenstate extends State<Formscreen2> {
-  String name;
-  String first_name;
-  String last_name;
-  String username;
-  String email;
-  String password;
-  String address;
-  String gender;
-  String contactno;
-  String chargeperhour;
-  String qualification;
-  String educationalinstitute;
+  String name='';
+  String first_name='';
+  String last_name='';
+  String username='';
+  String email='';
+  String password='';
+  String address='';
+  String gender='';
+  String contactno='';
+  String chargeperhour='';
+  String qualification='';
+  String educationalinstitute='';
   String _value = 'Primary-level(1-5)';
   bool isTeacher = true;
 
@@ -39,9 +39,10 @@ class Formscreenstate extends State<Formscreen2> {
           "password": password,
           "address": address.trim(),
           "gender": gender.trim(),
-          "contactno": int.parse(contactno.trim()),
+          "contactno": contactno.trim(),
           "email": email.trim(),
-          "educationalInstitute": educationalinstitute.trim(),
+          "chargePerHour":chargeperhour,
+          "educationalInstitute": educationalinstitute,
           "academicleveltoteach": _value.trim(),
           "is_teacher": isTeacher,
         }),
@@ -49,7 +50,7 @@ class Formscreenstate extends State<Formscreen2> {
 
       Map data = jsonDecode(response.body);
     } catch (err) {
-      print('Error occured');
+      print(err);
     }
   }
 
@@ -254,7 +255,7 @@ class Formscreenstate extends State<Formscreen2> {
         }
       },
       onSaved: (String value) {
-        qualification = value;
+        educationalinstitute = value;
       },
     );
   }

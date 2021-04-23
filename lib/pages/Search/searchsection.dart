@@ -29,7 +29,7 @@ class _SearchState extends State<Search> {
       print('-----Filtered Date');
 
       // Sending data to tutor lIst and re routing.
-      Navigator.pushNamed(context, '/tutorList', arguments: {'data': data});
+      Navigator.pushNamed(context, '/tutorList', arguments: {'data': filteredDate});
     } catch (Err) {
       print(Err);
     }

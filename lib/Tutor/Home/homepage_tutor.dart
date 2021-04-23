@@ -183,6 +183,7 @@ class _State extends State<TutorHome> {
                         ),
                       ),
                       onPressed: () {
+                        Navigator.pushNamed(context, '/tutorNotification');
                         //signup screen
                       },
                     )),
