@@ -9,6 +9,8 @@ class Search extends StatefulWidget {
 
 class _SearchState extends State<Search> {
   String _value = 'Maths';
+  List subjects = ['Maths','Social','Science','English','Nepali',
+  'Computer','Optional-Maths','Accounts'];
   String value1 = "Primary-level(1-5)";
   String values;
 
@@ -66,46 +68,19 @@ class _SearchState extends State<Search> {
                 child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                         value: _value,
-                        items: [
-                          DropdownMenuItem(
-                            child: Text(
-                              " Maths",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                              ),
+                        items: subjects.map((item){
+                          return DropdownMenuItem(child:
+                          Text("$item",
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
                             ),
-                            value: 'Maths',
                           ),
-                          DropdownMenuItem(
-                            child: Text(
-                              "Science",
-                              style: TextStyle(
-                                color: Colors.grey,
-                                fontSize: 20,
-                              ),
-                            ),
-                            value: 'Science',
-                          ),
-                          DropdownMenuItem(
-                              child: Text(
-                                "English",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              value: 'English'),
-                          DropdownMenuItem(
-                              child: Text(
-                                "Social",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              value: 'Social')
-                        ],
+                              value: (item)
+                          );
+
+                        }).toList(),
+
                         onChanged: (value) {
                           setState(() {
                             _value = value;
